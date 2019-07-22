@@ -1,0 +1,3 @@
+main
+	l2r_double
+	r2l_double

@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1531340129 source:g:\embeddeddiploma\projectfiles\session6\recursion.c
+	"recursion.h"
+
+1531340032 g:\embeddeddiploma\projectfiles\session6\recursion.h
+
+1531345004 source:g:\embeddeddiploma\projectfiles\session6\main.c
+	<stdio.h>
+	<stdlib.h>
+	"recursion.h"
+

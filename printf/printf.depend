@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1530130444 source:g:\embeddeddiploma\projectfiles\printf\main.c
+	<stdio.h>
+	<stdlib.h>
+

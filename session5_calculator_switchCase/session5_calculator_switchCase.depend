@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1531079124 source:g:\embeddeddiploma\projectfiles\session5_calculator_switchcase\main.c
+	<stdio.h>
+	<stdlib.h>
+

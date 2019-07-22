@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1530733892 source:g:\embeddeddiploma\projectfiles\session4\file.c
+	"file.h"
+
+1530733680 g:\embeddeddiploma\projectfiles\session4\file.h
+
+1530733840 source:g:\embeddeddiploma\projectfiles\session4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"file.h"
+

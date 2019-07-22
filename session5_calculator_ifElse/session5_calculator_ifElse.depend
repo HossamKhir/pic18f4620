@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1531077716 source:g:\embeddeddiploma\projectfiles\session5_calculator_ifelse\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

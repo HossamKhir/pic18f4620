@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1532805712 source:g:\embeddeddiploma\projectfiles\vtaskfile\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+

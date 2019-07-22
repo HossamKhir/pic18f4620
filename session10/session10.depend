@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1532552111 source:g:\embeddeddiploma\projectfiles\session10\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fun.h"
+	<conio.h>
+
+1532550548 source:g:\embeddeddiploma\projectfiles\session10\fun.c
+	"fun.h"
+
+1532552118 g:\embeddeddiploma\projectfiles\session10\fun.h
+	"F0.h"
+

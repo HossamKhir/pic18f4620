@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1530128971 source:g:\embeddeddiploma\projectfiles\backatit\main.c
+	<stdio.h>
+	<stdlib.h>
+
