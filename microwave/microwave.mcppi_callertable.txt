@@ -1,0 +1,4 @@
+main
+	SEGMENT7_vidInit
+	Div_8x8_U
+	SEGMENT7_vidDisplayDigit
