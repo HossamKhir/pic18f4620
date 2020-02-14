@@ -1,4 +1,4 @@
-#line 1 "G:/embeddedDiploma/proteusFiles/assignmentLCD/LCD0.c"
+#line 1 "E:/embedded_diploma/projects/pic/assignmentLCD/LCD0.c"
 
 sbit LCD_RS at RC4_bit;
 sbit LCD_EN at RC5_bit;

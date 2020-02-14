@@ -1,4 +1,4 @@
-#line 1 "G:/embeddedDiploma/proteusFiles/lcd4bit/lcdTask.c"
+#line 1 "E:/embedded_diploma/projects/pic/lcd4bit/lcdTask.c"
 void main() {
 
 }

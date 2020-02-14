@@ -1,6 +1,6 @@
-#line 1 "G:/embeddedDiploma/proteusFiles/lcd4bit/lcd4bit.c"
-#line 1 "g:/embeddeddiploma/proteusfiles/lcd4bit/lcd4bit.h"
-#line 17 "g:/embeddeddiploma/proteusfiles/lcd4bit/lcd4bit.h"
+#line 1 "E:/embedded_diploma/projects/pic/lcd4bit/lcd4bit.c"
+#line 1 "e:/embedded_diploma/projects/pic/lcd4bit/lcd4bit.h"
+#line 17 "e:/embedded_diploma/projects/pic/lcd4bit/lcd4bit.h"
 void lcd_enable(void);
 void lcd_send_command(char command);
 void lcd_send_data(char Data);
@@ -11,7 +11,7 @@ void lcdCmd(char command);
 void lcdSetCursor(char row, char col);
 void lcdOut(char row, char col, char *text);
 void lcdChr(char row, char col, char text);
-#line 3 "G:/embeddedDiploma/proteusFiles/lcd4bit/lcd4bit.c"
+#line 3 "E:/embedded_diploma/projects/pic/lcd4bit/lcd4bit.c"
 void lcd_enable(void){
   RC1_bit  = 1;
  Delay_us(5);
