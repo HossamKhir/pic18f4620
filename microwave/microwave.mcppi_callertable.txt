@@ -1,4 +1,46 @@
 main
+	__CC2DW
+	UWAVE_SENSORS_vidInit
+	KEYPAD4X3_vidInit
 	SEGMENT7_vidInit
-	Div_8x8_U
+	TIMERS_vidInitTimer
+		Mul_32x32_U
+		TIMERS_vidUpdateInitialCount
+			Mul_32x32_U
+			Byte2Double
+				NRM4032
+					SETFUN32
+					FIXSIGN32
+					SETFOV32
+					RES032
+			Mul_32x32_FP
+				RES032
+				SETFOV32
+				SETFUN32
+			Longword2Double
+				NRM4032
+					SETFUN32
+					FIXSIGN32
+					SETFOV32
+					RES032
+			Div_32x32_FP
+				SETFDZ32
+				RES032
+				SETFOV32
+				SETFUN32
+			Sub_32x32_FP
+				Add_32x32_FP
+					NRM4032
+						SETFUN32
+						FIXSIGN32
+						SETFOV32
+						RES032
+					SETFOV32
+			Double2Longword
+				SETIOV3224
+		TIMERS_vidSetPrescale
+			Mul_32x32_U
+		TIMERS_vidResetTimer
 	SEGMENT7_vidDisplayDigit
+	UWAVE_UTIL_u8DecrementTime
+	TIMERS_vidResetTimer

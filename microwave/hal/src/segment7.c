@@ -1,37 +1,55 @@
 #include "segment7.h"
 
-unsigned short *ptr_u16DirectionDisplayData;
-unsigned short *ptr_u16DirectionDisplaySelect;
+uint16Ref u16DirectionDisplayDataRef;
+uint16Ref u16DirectionDisplaySelectRef;
 
-unsigned short *ptr_u16RegisterDisplayData;
-unsigned short *ptr_u16RegisterDisplaySelect;
+uint16Ref u16RegisterDisplayDataRef;
+uint16Ref u16RegisterDisplaySelectRef;
 
-#define DISPLAY_DIRECTION_DATA               (*ptr_u16DirectionDisplayData)
-#define DISPLAY_DIRECTION_SELECTION          (*ptr_u16DirectionDisplaySelect)
-#define DISPLAY_DATA                         (*ptr_u16RegisterDisplayData)
-#define DISPLAY_SELECT                       (*ptr_u16RegisterDisplaySelect)
-      
+const char u8Numbers[10] = { 0b11000000,    // 0
+      0b11111001,                           // 1
+      0b10100100,                           // 2
+      0b10110000,                           // 3
+      0b10011001,                           // 4
+      0b10010010,                           // 5
+      0b10000010,                           // 6
+      0b11111000,                           // 7
+      0b10000000,                           // 8
+      0b10010000                            // 9
+      };
+
+#define DISPLAY_DIRECTION_DATA      (DEREF(u16DirectionDisplayDataRef))
+#define DISPLAY_DIRECTION_SELECTION (DEREF(u16DirectionDisplaySelectRef))
+#define DISPLAY_DATA                (DEREF(u16RegisterDisplayDataRef))
+#define DISPLAY_SELECT              (DEREF(u16RegisterDisplaySelectRef))
+
+#define DISPLAY_ACTIVATE()          (DISPLAY_DIRECTION_DATA &= MASK_DISPLAY_DATA_DIRECTION)
+#define DISPLAY_DEACTIVATE()        (DISPLAY_DIRECTION_DATA &= ~MASK_DISPLAY_DATA_DIRECTION)
+
 void
-SEGMENT7_vidInit(unsigned short* ptr_u16RegisterSegmentDataDirection,
-                     unsigned short* ptr_u16RegisterSegmentSelectDirection,
-                     unsigned short* ptr_u16RegisterSegmentData,
-                     unsigned short* ptr_u16RegisterSegmentSelect,
-                     unsigned char u8SelectionMask)
+SEGMENT7_vidInit(uint16Ref u16RegisterSegmentSelectDirectionRef,
+                 uint16Ref u16RegisterSegmentDataDirectionRef,
+                 uint16Ref u16RegisterSegmentSelectRef,
+                 uint16Ref u16RegisterSegmentDataRef,
+                 uint8 u8SelectionMask)
 {
-    ptr_u16DirectionDisplayData    = ptr_u16RegisterSegmentDataDirection;
-    ptr_u16DirectionDisplaySelect  = ptr_u16RegisterSegmentSelectDirection;
+    ADCON1 |= 0X0F;
     
-    ptr_u16RegisterDisplayData     = ptr_u16RegisterSegmentData;
-    ptr_u16RegisterDisplaySelect   = ptr_u16RegisterSegmentSelect;
+    u16DirectionDisplayDataRef      = u16RegisterSegmentDataDirectionRef;
+    u16DirectionDisplaySelectRef    = u16RegisterSegmentSelectDirectionRef;
     
-    DISPLAY_DIRECTION_DATA         &= MASK_DISPLAY_DATA_DIRECTION;
-    DISPLAY_DIRECTION_SELECTION    &= u8SelectionMask;
+    u16RegisterDisplayDataRef       = u16RegisterSegmentDataRef;
+    u16RegisterDisplaySelectRef     = u16RegisterSegmentSelectRef;
+
+    DISPLAY_DIRECTION_SELECTION     &= u8SelectionMask;
+    DISPLAY_ACTIVATE();
 }
 
 void
-SEGMENT7_vidDisplayDigit(unsigned char u8DisplaySelected,
-                                  unsigned char u8Digit)
+SEGMENT7_vidDisplayDigit(uint8 u8DisplaySelected,
+                                 uint8 u8Digit)
 {
     DISPLAY_SELECT = u8DisplaySelected;
-    DISPLAY_DATA   = u8Digit;
+    // FIXME: the '~' is to overcome the bug in PicSimLab
+    DISPLAY_DATA   = ~u8Numbers[u8Digit];
 }

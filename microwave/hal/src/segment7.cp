@@ -1,18 +1,52 @@
 #line 1 "E:/embedded_diploma/projects/pic/microwave/hal/src/segment7.c"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
+#line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 
 
 
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned int uint32;
+typedef unsigned long uint64;
 
 
-void SEGMENT7_vidInit(unsigned short*, unsigned short*, unsigned short*, unsigned short*, unsigned char);
-void SEGMENT7_vidDisplayDigit(unsigned char, unsigned char);
+typedef uint8* uint8Ref;
+typedef uint16* uint16Ref;
+typedef uint32* uint32Ref;
+typedef uint64* uint64Ref;
+
+typedef struct {
+ uint8 u8Seconds;
+ uint8 u8Minutes;
+ uint16 u16TimeDisplay;
+}HeatingTime;
+
+typedef HeatingTime* HeatingTimeRef;
+#line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
+#line 9 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
+void SEGMENT7_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8);
+void SEGMENT7_vidDisplayDigit(uint8, uint8);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/hal/src/segment7.c"
-unsigned short *ptr_u16DirectionDisplayData;
-unsigned short *ptr_u16DirectionDisplaySelect;
+uint16Ref u16DirectionDisplayDataRef;
+uint16Ref u16DirectionDisplaySelectRef;
 
-unsigned short *ptr_u16RegisterDisplayData;
-unsigned short *ptr_u16RegisterDisplaySelect;
+uint16Ref u16RegisterDisplayDataRef;
+uint16Ref u16RegisterDisplaySelectRef;
+
+const char u8Numbers[10] = { 0b11000000,
+ 0b11111001,
+ 0b10100100,
+ 0b10110000,
+ 0b10011001,
+ 0b10010010,
+ 0b10000010,
+ 0b11111000,
+ 0b10000000,
+ 0b10010000
+ };
+
+
+
 
 
 
@@ -20,26 +54,29 @@ unsigned short *ptr_u16RegisterDisplaySelect;
 
 
 void
-SEGMENT7_vidInit(unsigned short* ptr_u16RegisterSegmentDataDirection,
- unsigned short* ptr_u16RegisterSegmentSelectDirection,
- unsigned short* ptr_u16RegisterSegmentData,
- unsigned short* ptr_u16RegisterSegmentSelect,
- unsigned char u8SelectionMask)
+SEGMENT7_vidInit(uint16Ref u16RegisterSegmentSelectDirectionRef,
+ uint16Ref u16RegisterSegmentDataDirectionRef,
+ uint16Ref u16RegisterSegmentSelectRef,
+ uint16Ref u16RegisterSegmentDataRef,
+ uint8 u8SelectionMask)
 {
- ptr_u16DirectionDisplayData = ptr_u16RegisterSegmentDataDirection;
- ptr_u16DirectionDisplaySelect = ptr_u16RegisterSegmentSelectDirection;
+ ADCON1 |= 0X0F;
 
- ptr_u16RegisterDisplayData = ptr_u16RegisterSegmentData;
- ptr_u16RegisterDisplaySelect = ptr_u16RegisterSegmentSelect;
+ u16DirectionDisplayDataRef = u16RegisterSegmentDataDirectionRef;
+ u16DirectionDisplaySelectRef = u16RegisterSegmentSelectDirectionRef;
 
-  (*ptr_u16DirectionDisplayData)  &=  (~(0b011111111)) ;
-  (*ptr_u16DirectionDisplaySelect)  &= u8SelectionMask;
+ u16RegisterDisplayDataRef = u16RegisterSegmentDataRef;
+ u16RegisterDisplaySelectRef = u16RegisterSegmentSelectRef;
+
+  ( (*(u16DirectionDisplaySelectRef)) )  &= u8SelectionMask;
+  ( ( (*(u16DirectionDisplayDataRef)) )  &= (~(0b011111111)) ) ;
 }
 
 void
-SEGMENT7_vidDisplayDigit(unsigned char u8DisplaySelected,
- unsigned char u8Digit)
+SEGMENT7_vidDisplayDigit(uint8 u8DisplaySelected,
+ uint8 u8Digit)
 {
-  (*ptr_u16RegisterDisplaySelect)  = u8DisplaySelected;
-  (*ptr_u16RegisterDisplayData)  = u8Digit;
+  ( (*(u16RegisterDisplaySelectRef)) )  = u8DisplaySelected;
+
+  ( (*(u16RegisterDisplayDataRef)) )  = ~u8Numbers[u8Digit];
 }

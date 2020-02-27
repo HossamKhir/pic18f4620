@@ -1,139 +1,106 @@
 
 _main:
 
-;main.c,39 :: 		void main() {
-;main.c,42 :: 		unsigned char u8Index = 0;
-	CLRF        main_u8Index_L0+0 
-;main.c,44 :: 		SEGMENT7_vidInit(MICROWAVE_REGISTER_DISPLAY_SELECT,
+;main.c,7 :: 		void main() {
+;main.c,9 :: 		UWAVE_INIT();
+	MOVLW       127
+	ANDWF       TRISB+0, 1 
+	MOVLW       127
+	ANDWF       PORTB+0, 1 
+	BCF         TRISC+0, 5 
+	BCF         PORTC+0, 5 
+	CALL        _UWAVE_SENSORS_vidInit+0, 0
 	MOVLW       TRISD+0
-	MOVWF       FARG_SEGMENT7_vidInit+0 
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
 	MOVLW       hi_addr(TRISD+0)
-	MOVWF       FARG_SEGMENT7_vidInit+1 
-;main.c,45 :: 		MICROWAVE_REGISTER_DISPLAY_DATA,
+	MOVWF       FARG_KEYPAD4X3_vidInit+1 
+	MOVLW       TRISB+0
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
+	MOVLW       hi_addr(TRISB+0)
+	MOVWF       FARG_KEYPAD4X3_vidInit+1 
+	MOVLW       PORTD+0
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
+	MOVLW       hi_addr(PORTD+0)
+	MOVWF       FARG_KEYPAD4X3_vidInit+1 
+	MOVLW       PORTB+0
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
+	MOVLW       hi_addr(PORTB+0)
+	MOVWF       FARG_KEYPAD4X3_vidInit+1 
+	MOVLW       15
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
+	MOVLW       7
+	MOVWF       FARG_KEYPAD4X3_vidInit+0 
+	CALL        _KEYPAD4X3_vidInit+0, 0
 	MOVLW       TRISA+0
 	MOVWF       FARG_SEGMENT7_vidInit+0 
 	MOVLW       hi_addr(TRISA+0)
 	MOVWF       FARG_SEGMENT7_vidInit+1 
-;main.c,46 :: 		MICROWAVE_DISPLAY,
-	MOVLW       PORTD+0
+	MOVLW       TRISD+0
 	MOVWF       FARG_SEGMENT7_vidInit+0 
-	MOVLW       hi_addr(PORTD+0)
+	MOVLW       hi_addr(TRISD+0)
 	MOVWF       FARG_SEGMENT7_vidInit+1 
-;main.c,47 :: 		MICROWAVE_DISPLAY_SELECT,
 	MOVLW       PORTA+0
 	MOVWF       FARG_SEGMENT7_vidInit+0 
 	MOVLW       hi_addr(PORTA+0)
 	MOVWF       FARG_SEGMENT7_vidInit+1 
-;main.c,48 :: 		MASK_MICROWAVE_DISPLAY_SELECT);
+	MOVLW       PORTD+0
+	MOVWF       FARG_SEGMENT7_vidInit+0 
+	MOVLW       hi_addr(PORTD+0)
+	MOVWF       FARG_SEGMENT7_vidInit+1 
 	MOVLW       195
 	MOVWF       FARG_SEGMENT7_vidInit+0 
 	CALL        _SEGMENT7_vidInit+0, 0
-;main.c,50 :: 		time.seconds = 10;
-	MOVLW       10
+;main.c,11 :: 		time.u8Seconds = 9;
+	MOVLW       9
 	MOVWF       _time+0 
-;main.c,52 :: 		*MICROWAVE_REGISTER_LAMP &= ~(0xff);
+;main.c,13 :: 		TIMERS_vidInitTimer(TIMER0, P128, 1, SECOND);
+	CLRF        FARG_TIMERS_vidInitTimer+0 
+	MOVLW       7
+	MOVWF       FARG_TIMERS_vidInitTimer+0 
+	MOVLW       1
+	MOVWF       FARG_TIMERS_vidInitTimer+0 
 	MOVLW       0
-	ANDWF       TRISB+0, 1 
-;main.c,53 :: 		*MICROWAVE_LAMP &= ~(0xFF);
+	MOVWF       FARG_TIMERS_vidInitTimer+1 
+	MOVWF       FARG_TIMERS_vidInitTimer+2 
+	MOVWF       FARG_TIMERS_vidInitTimer+3 
+	MOVLW       64
+	MOVWF       FARG_TIMERS_vidInitTimer+0 
+	MOVLW       66
+	MOVWF       FARG_TIMERS_vidInitTimer+1 
+	MOVLW       15
+	MOVWF       FARG_TIMERS_vidInitTimer+2 
 	MOVLW       0
-	ANDWF       PORTB+0, 1 
-;main.c,55 :: 		while(time.seconds >= 0)
+	MOVWF       FARG_TIMERS_vidInitTimer+3 
+	CALL        _TIMERS_vidInitTimer+0, 0
+;main.c,14 :: 		START_TMR(TIMER0);
+	BSF         T0CON+0, 7 
+;main.c,15 :: 		while(1)
 L_main0:
-	MOVLW       0
-	SUBWF       _time+0, 0 
-	BTFSS       STATUS+0, 0 
-	GOTO        L_main1
-;main.c,57 :: 		for (u8Index = 0; u8Index < 200; u8Index += 1)
-	CLRF        main_u8Index_L0+0 
-L_main2:
-	MOVLW       200
-	SUBWF       main_u8Index_L0+0, 0 
-	BTFSC       STATUS+0, 0 
-	GOTO        L_main3
-;main.c,59 :: 		SEGMENT7_vidDisplayDigit(MASK_SECONDS_UNITS,
+;main.c,17 :: 		SEGMENT7_vidDisplayDigit(0x20, time.u8Seconds); // 0x00100000
 	MOVLW       32
 	MOVWF       FARG_SEGMENT7_vidDisplayDigit+0 
-;main.c,60 :: 		numbers[(time.seconds % 10)]);
-	MOVLW       10
-	MOVWF       R4 
 	MOVF        _time+0, 0 
-	MOVWF       R0 
-	CALL        _Div_8x8_U+0, 0
-	MOVF        R8, 0 
-	MOVWF       R0 
-	MOVLW       _numbers+0
-	ADDWF       R0, 0 
-	MOVWF       TBLPTRL 
-	MOVLW       hi_addr(_numbers+0)
-	MOVWF       TBLPTRH 
-	MOVLW       0
-	ADDWFC      TBLPTRH, 1 
-	MOVLW       higher_addr(_numbers+0)
-	MOVWF       TBLPTRU 
-	MOVLW       0
-	ADDWFC      TBLPTRU, 1 
-	TBLRD*+
-	MOVFF       TABLAT+0, FARG_SEGMENT7_vidDisplayDigit+0
-	CALL        _SEGMENT7_vidDisplayDigit+0, 0
-;main.c,62 :: 		Delay_us(2500);
-	MOVLW       7
-	MOVWF       R12, 0
-	MOVLW       125
-	MOVWF       R13, 0
-L_main5:
-	DECFSZ      R13, 1, 1
-	BRA         L_main5
-	DECFSZ      R12, 1, 1
-	BRA         L_main5
-;main.c,64 :: 		SEGMENT7_vidDisplayDigit(MASK_SECONDS_TENS,
-	MOVLW       16
 	MOVWF       FARG_SEGMENT7_vidDisplayDigit+0 
-;main.c,65 :: 		numbers[(time.seconds / 10)]);
-	MOVLW       10
-	MOVWF       R4 
-	MOVF        _time+0, 0 
-	MOVWF       R0 
-	CALL        _Div_8x8_U+0, 0
-	MOVLW       _numbers+0
-	ADDWF       R0, 0 
-	MOVWF       TBLPTRL 
-	MOVLW       hi_addr(_numbers+0)
-	MOVWF       TBLPTRH 
-	MOVLW       0
-	ADDWFC      TBLPTRH, 1 
-	MOVLW       higher_addr(_numbers+0)
-	MOVWF       TBLPTRU 
-	MOVLW       0
-	ADDWFC      TBLPTRU, 1 
-	TBLRD*+
-	MOVFF       TABLAT+0, FARG_SEGMENT7_vidDisplayDigit+0
 	CALL        _SEGMENT7_vidDisplayDigit+0, 0
-;main.c,67 :: 		Delay_us(2500);
-	MOVLW       7
-	MOVWF       R12, 0
-	MOVLW       125
-	MOVWF       R13, 0
-L_main6:
-	DECFSZ      R13, 1, 1
-	BRA         L_main6
-	DECFSZ      R12, 1, 1
-	BRA         L_main6
-;main.c,57 :: 		for (u8Index = 0; u8Index < 200; u8Index += 1)
-	INCF        main_u8Index_L0+0, 1 
-;main.c,68 :: 		}
+;main.c,18 :: 		if(INTCON.TMR0IF)
+	BTFSS       INTCON+0, 2 
 	GOTO        L_main2
-L_main3:
-;main.c,70 :: 		*MICROWAVE_LAMP ^= MASK_LAMP;
-	BTG         PORTB+0, 4 
-;main.c,72 :: 		time.seconds -= 1;
-	DECF        _time+0, 0 
-	MOVWF       R0 
-	MOVF        R0, 0 
-	MOVWF       _time+0 
-;main.c,73 :: 		}
+;main.c,20 :: 		UWAVE_UTIL_u8DecrementTime(REF(time));
+	MOVLW       _time+0
+	MOVWF       FARG_UWAVE_UTIL_u8DecrementTime+0 
+	MOVLW       hi_addr(_time+0)
+	MOVWF       FARG_UWAVE_UTIL_u8DecrementTime+1 
+	CALL        _UWAVE_UTIL_u8DecrementTime+0, 0
+;main.c,21 :: 		TIMERS_vidResetTimer(TIMER0);
+	CLRF        FARG_TIMERS_vidResetTimer+0 
+	CALL        _TIMERS_vidResetTimer+0, 0
+;main.c,22 :: 		START_TMR(TIMER0);
+	BSF         T0CON+0, 7 
+;main.c,23 :: 		}
+L_main2:
+;main.c,29 :: 		}
 	GOTO        L_main0
-L_main1:
-;main.c,74 :: 		}
+;main.c,30 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main
