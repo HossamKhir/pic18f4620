@@ -7,7 +7,7 @@
   Fosc = 8MHZ
 
   STEP-BY-STEP PROCEDURE:
-1ª STEP-Configure PR2 -> Period
+1ï¿½ STEP-Configure PR2 -> Period
       _________________________________________________________
       (I)Formula: PR2 = Fosc / (4 * Freq_pwm * TMR2_ps) -1
       _________________________________________________________
@@ -19,7 +19,7 @@
       T_pwm = (49 + 1) * 4 * 0.125us * 4
       T_pwm = 100 -> F_pwm = 1/ T_pwm (X1000) -> F_pwm = 10 KHz
 
-2ª STEP-Configure CCPRxL e CCPxCON<5:4> -> DutyCycle
+2ï¿½ STEP-Configure CCPRxL e CCPxCON<5:4> -> DutyCycle
       _________________________________________________________
       (III)Formula: 10_bits = (%DC_pwm * Fosc) /(100 * TMR2_ps * F_pwm)
       _________________________________________________________
@@ -34,7 +34,7 @@
       _________________________________________________________
                     10_bits = 50/(4 * (49 + 1))
                     10_bits = 0.25 -> 25%
-3ª STEP- What is the Signal width? -> W and T
+3ï¿½ STEP- What is the Signal width? -> W and T
       _________________________________________________________
       (V)Formula:   T = 50
                     W = 50 * 0.5 = 25

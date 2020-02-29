@@ -10,17 +10,61 @@ typedef unsigned short uint16;
 typedef unsigned int uint32;
 typedef unsigned long uint64;
 
+typedef enum {
+ TIMER0,
+ TIMER1,
+ TIMER2,
+ TIMER3
+} enTimer;
 
-typedef uint8* uint8Ref;
-typedef uint16* uint16Ref;
-typedef uint32* uint32Ref;
-typedef uint64* uint64Ref;
+typedef enum {
+ PRE001,
+ PRE002,
+ PRE004,
+ PRE008,
+ PRE016,
+ PRE032,
+ PRE064,
+ PRE128,
+ PRE256
+} enPrescale;
+
+typedef enum {
+ POS01,
+ POS02,
+ POS03,
+ POS04,
+ POS05,
+ POS06,
+ POS07,
+ POS08,
+ POS09,
+ POS10,
+ POS11,
+ POS12,
+ POS13,
+ POS14,
+ POS15,
+ POS16
+} enPostscale;
+
+typedef enum {
+ CHDH = 0x0C,
+ CHDL,
+ CLDH,
+ CLDL
+} enPWMMode;
 
 typedef struct {
  uint8 u8Seconds;
  uint8 u8Minutes;
  uint16 u16TimeDisplay;
 }HeatingTime;
+
+typedef uint8* uint8Ref;
+typedef uint16* uint16Ref;
+typedef uint32* uint32Ref;
+typedef uint64* uint64Ref;
 
 typedef HeatingTime* HeatingTimeRef;
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
@@ -42,31 +86,12 @@ void UWAVE_SENSORS_vidInit(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/timers.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
-#line 56 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/timers.h"
-const enum enPrescale {
- P1,
- P2,
- P4,
- P8,
- P16,
- P32,
- P64,
- P128,
- P256
-};
-
-void TIMERS_vidInitTimer(uint8, const enum enPrescale, uint64, uint64);
-void TIMERS_vidUpdateInitialCount(uint64 , uint8, static enum enPrescale);
-void TIMERS_vidResetTimer(uint8 );
-#line 34 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/pwm.h"
-const enum PWM_MODE{
- CHDH = 0x0C,
- CHDL,
- CLDH,
- CLDL
-};
-
-void PWM_vidInit(uint8 u8Mode, uint16 u16DutyCycle);
+#line 52 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/timers.h"
+void TIMERS_vidInitTimer(enTimer, enPrescale, enPostscale, uint64, uint64);
+void TIMERS_vidUpdateInitialCount(uint64 , enTimer, enPrescale, enPostscale);
+void TIMERS_vidResetTimer(uint8);
+#line 40 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/pwm.h"
+void PWM_vidInit(enPWMMode, uint16, uint64, uint64);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_keypad.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/keypad4x3.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
@@ -77,6 +102,7 @@ void PWM_vidInit(uint8 u8Mode, uint16 u16DutyCycle);
 #line 9 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
 void SEGMENT7_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8);
 void SEGMENT7_vidDisplayDigit(uint8, uint8);
+void SEGMENT7_vidDisplayFigure(uint8, uint8);
 #line 8 "e:/embedded_diploma/projects/pic/microwave/hal/inc/keypad4x3.h"
 void KEYPAD4X3_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8,
  uint8);
@@ -85,8 +111,9 @@ uint8 KEYPAD4X3_u8GetKeyPressed(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
-#line 26 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
+#line 30 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
 void UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef);
+void UWAVE_DISPLAY_vidDisplayEnd(void);
 #line 23 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
 void UWAVE_UTIL_vidUpdateTime(HeatingTimeRef);
 void UWAVE_UTIL_vidSetTime(HeatingTimeRef);
@@ -94,25 +121,19 @@ uint8 UWAVE_UTIL_u8DecrementTime(HeatingTimeRef);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/app/src/main.c"
 HeatingTime time;
 
-uint8 u8Index = 0;
+uint8 u8Index = 0x00;
+uint8 u8EndFlag = 0;
 
 void main() {
+  { { (( (TRISB) )=(( (TRISB) )&(~ (0x80) ))) ; (( (PORTB) )=(( (PORTB) )&(~ (0x80) ))) ; } ; { (( (TRISC) )=(( (TRISC) )&(~ (0x20) ))) ; ( ( (PORTC) &=(~(1<< (0x05) ))) ) ; } ; UWAVE_SENSORS_vidInit() ; PWM_vidInit(( (0x0C) ),(25),(10),( (1000UL) )) ; { KEYPAD4X3_vidInit( ( (&(TRISD)) ) , ( (&(TRISB)) ) , ( (&(PORTD)) ) , ( (&(PORTB)) ) , (0x0F) , (0x07) ); } ; SEGMENT7_vidInit( ( (&(TRISA)) ) , ( (&(TRISD)) ) , ( (&(PORTA)) ) , ( (&(PORTD)) ) , (~(0x3C)) ); ; } ;
 
-  { { (( (TRISB) )=(( (TRISB) )&(~ (0x80) ))) ; (( (PORTB) )=(( (PORTB) )&(~ (0x80) ))) ; } ; { (( (TRISC) )=(( (TRISC) )&(~ (0x20) ))) ; ( ( (PORTC) &=(~(1<< (0x05) ))) ) ; } ; UWAVE_SENSORS_vidInit() ; ( (0x0C) ) ; { KEYPAD4X3_vidInit( ( (&(TRISD)) ) , ( (&(TRISB)) ) , ( (&(PORTD)) ) , ( (&(PORTB)) ) , (0x0F) , (0x07) ); } ; SEGMENT7_vidInit( ( (&(TRISA)) ) , ( (&(TRISD)) ) , ( (&(PORTA)) ) , ( (&(PORTD)) ) , (~(0x3C)) ); ; } ;
 
- time.u8Seconds = 9;
 
- TIMERS_vidInitTimer( 0 , P128, 1,  1000000 );
-  ( T0CON . TMR0ON =1) ;
- while(1)
- {
- SEGMENT7_vidDisplayDigit(0x20, time.u8Seconds);
- if(INTCON.TMR0IF)
- {
- UWAVE_UTIL_u8DecrementTime( (&(time)) );
- TIMERS_vidResetTimer( 0 );
-  ( T0CON . TMR0ON =1) ;
- }
-#line 29 "E:/embedded_diploma/projects/pic/microwave/app/src/main.c"
- }
+ time.u8Seconds = 3;
+ time.u8Minutes = 0;
+
+  ( ( T2CON . TMR2ON =1) ) ;
+ Delay_ms(5000);
+  ( ( T2CON . TMR2ON =0) ) ;
+#line 37 "E:/embedded_diploma/projects/pic/microwave/app/src/main.c"
 }

@@ -2,29 +2,36 @@
 
 HeatingTime time;
 
-uint8 u8Index = 0;
+uint8 u8Index = 0x00;
+uint8 u8EndFlag = 0;
 
 void main() {
-    // FIXME: testing block
     UWAVE_INIT();
+
+    // FIXME: testing block
+    //==========================================================================    
+    time.u8Seconds = 3;
+    time.u8Minutes = 0;
+
+    PWM_START();
+    Delay_ms(5000);
+    PWM_HALT();
     
-    time.u8Seconds = 9;
-    
-    TIMERS_vidInitTimer(TIMER0, P128, 1, SECOND);
-    START_TMR(TIMER0);
-    while(1)
-    {
-        SEGMENT7_vidDisplayDigit(0x20, time.u8Seconds); // 0x00100000
-        if(INTCON.TMR0IF)
-        {
-            UWAVE_UTIL_u8DecrementTime(REF(time));
-            TIMERS_vidResetTimer(TIMER0);
-            START_TMR(TIMER0);
-        }
-        /*Delay_ms(1000);
-        if(UWAVE_UTIL_u8DecrementTime(REF(time)))
-        {
-            break;
-        }*/
-    }
+    // TIMERS_vidInitTimer(TIMER0, PRE128, POS01, 10, MSECOND);
+    // TIMER_START(TIMER0);
+    // while(1)
+    // {
+    //     if(INTCON.TMR0IF)
+    //     {
+    //         (!u8EndFlag)? UWAVE_DISPLAY_vidUpdateTimeDisplay(REF(time)) : UWAVE_DISPLAY_vidDisplayEnd();
+    //         if (++u8Index == 100)
+    //         {
+    //             u8Index = 0;
+    //             u8EndFlag = UWAVE_UTIL_u8DecrementTime(REF(time));
+    //         }
+    //         TIMERS_vidResetTimer(TIMER0);
+    //         TIMER_START(TIMER0);
+    //     }
+    // }
+    //==========================================================================
 }

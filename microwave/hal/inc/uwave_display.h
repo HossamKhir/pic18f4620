@@ -10,12 +10,16 @@
 #define UWAVE_DISPLAY                      (REF(PORTD))
 #define UWAVE_DISPLAY_SELECT               (REF(PORTA))
 
-#define MASK_SECONDS_UNITS                     (0x20)
-#define MASK_SECONDS_TENS                      (0x10)
-#define MASK_MINUTES_UNITS                     (0x08)
-#define MASK_MINUTES_TENS                      (0x04)
+#define MASK_SECONDS_UNITS                 (0x20)
+#define MASK_SECONDS_TENS                  (0x10)
+#define MASK_MINUTES_UNITS                 (0x08)
+#define MASK_MINUTES_TENS                  (0x04)
 
 #define MASK_UWAVE_DISPLAY_SELECT          (~(0x3C))
+
+#define UWAVE_DISPLAY_E                          (0x86)
+#define UWAVE_DISPLAY_N                          (0xAB)
+#define UWAVE_DISPLAY_D                          (0xA1)
 
 #define UWAVE_DISPLAY_INIT() SEGMENT7_vidInit(UWAVE_REGISTER_DISPLAY_SELECT, \
             UWAVE_REGISTER_DISPLAY_DATA, \
@@ -24,5 +28,6 @@
             MASK_UWAVE_DISPLAY_SELECT);
 
 void UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef);
+void UWAVE_DISPLAY_vidDisplayEnd(void);
 
 #endif

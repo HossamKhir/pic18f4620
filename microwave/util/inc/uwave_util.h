@@ -15,7 +15,7 @@
                          LAMP_INIT(); \
                          UWAVE_HEATER_INIT(); \
                          UWAVE_SENSORS_INIT();\
-                         UWAVE_MOTOR_INIT();\
+                         UWAVE_MOTOR_INIT(UWAVE_MOTOR_MODE,25,10,KHZ);\
                          UWAVE_KEYPAD_INIT(); \
                          UWAVE_DISPLAY_INIT(); \
                      }

@@ -8,6 +8,6 @@
 #define UWAVE_MOTOR_MODE    (0x0C)
 
 // TODO: implement initialisation function
-#define UWAVE_MOTOR_INIT()  (UWAVE_MOTOR_MODE)  
+#define UWAVE_MOTOR_INIT(MODE,D_CYCLE,PWM_FREQ,FREQ_UNIT)  PWM_vidInit((MODE),(D_CYCLE),(PWM_FREQ),(FREQ_UNIT))
 
 #endif /* _UWAVE_MOTOR_H_ */

@@ -8,5 +8,6 @@
 
 void SEGMENT7_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8);
 void SEGMENT7_vidDisplayDigit(uint8, uint8);
+void SEGMENT7_vidDisplayFigure(uint8, uint8);
 
 #endif

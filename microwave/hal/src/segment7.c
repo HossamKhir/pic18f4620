@@ -6,16 +6,17 @@ uint16Ref u16DirectionDisplaySelectRef;
 uint16Ref u16RegisterDisplayDataRef;
 uint16Ref u16RegisterDisplaySelectRef;
 
-const char u8Numbers[10] = { 0b11000000,    // 0
-      0b11111001,                           // 1
-      0b10100100,                           // 2
-      0b10110000,                           // 3
-      0b10011001,                           // 4
-      0b10010010,                           // 5
-      0b10000010,                           // 6
-      0b11111000,                           // 7
-      0b10000000,                           // 8
-      0b10010000                            // 9
+const char u8Numbers[10] = {
+      0b11000000,        // 0
+      0b11111001,        // 1
+      0b10100100,        // 2
+      0b10110000,        // 3
+      0b10011001,        // 4
+      0b10010010,        // 5
+      0b10000010,        // 6
+      0b11111000,        // 7
+      0b10000000,        // 8
+      0b10010000         // 9
       };
 
 #define DISPLAY_DIRECTION_DATA      (DEREF(u16DirectionDisplayDataRef))
@@ -52,4 +53,13 @@ SEGMENT7_vidDisplayDigit(uint8 u8DisplaySelected,
     DISPLAY_SELECT = u8DisplaySelected;
     // FIXME: the '~' is to overcome the bug in PicSimLab
     DISPLAY_DATA   = ~u8Numbers[u8Digit];
+}
+
+void
+SEGMENT7_vidDisplayFigure(uint8 u8DisplaySelected,
+                                uint8 u8Figure)
+{
+    DISPLAY_SELECT = u8DisplaySelected;
+    // FIXME: the '~' is to overcome the bug in PicSimLab
+    DISPLAY_DATA   = ~u8Figure;
 }

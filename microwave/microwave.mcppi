@@ -6,7 +6,7 @@ Value=-1
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=mcal\src\timers.c
+Value=app\src\main.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -32,10 +32,8 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=3
+Count=1
 File0=app\src\main.c
-File1=mcal\src\timers.c
-File2=mcal\inc\timers.h
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]

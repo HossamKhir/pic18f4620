@@ -1,7 +1,7 @@
 
 _main:
 
-;main.c,7 :: 		void main() {
+;main.c,8 :: 		void main() {
 ;main.c,9 :: 		UWAVE_INIT();
 	MOVLW       127
 	ANDWF       TRISB+0, 1 
@@ -10,6 +10,25 @@ _main:
 	BCF         TRISC+0, 5 
 	BCF         PORTC+0, 5 
 	CALL        _UWAVE_SENSORS_vidInit+0, 0
+	MOVLW       12
+	MOVWF       FARG_PWM_vidInit+0 
+	MOVLW       25
+	MOVWF       FARG_PWM_vidInit+0 
+	MOVLW       10
+	MOVWF       FARG_PWM_vidInit+0 
+	MOVLW       0
+	MOVWF       FARG_PWM_vidInit+1 
+	MOVWF       FARG_PWM_vidInit+2 
+	MOVWF       FARG_PWM_vidInit+3 
+	MOVLW       232
+	MOVWF       FARG_PWM_vidInit+0 
+	MOVLW       3
+	MOVWF       FARG_PWM_vidInit+1 
+	MOVLW       0
+	MOVWF       FARG_PWM_vidInit+2 
+	MOVLW       0
+	MOVWF       FARG_PWM_vidInit+3 
+	CALL        _PWM_vidInit+0, 0
 	MOVLW       TRISD+0
 	MOVWF       FARG_KEYPAD4X3_vidInit+0 
 	MOVLW       hi_addr(TRISD+0)
@@ -50,57 +69,32 @@ _main:
 	MOVLW       195
 	MOVWF       FARG_SEGMENT7_vidInit+0 
 	CALL        _SEGMENT7_vidInit+0, 0
-;main.c,11 :: 		time.u8Seconds = 9;
-	MOVLW       9
+;main.c,13 :: 		time.u8Seconds = 3;
+	MOVLW       3
 	MOVWF       _time+0 
-;main.c,13 :: 		TIMERS_vidInitTimer(TIMER0, P128, 1, SECOND);
-	CLRF        FARG_TIMERS_vidInitTimer+0 
-	MOVLW       7
-	MOVWF       FARG_TIMERS_vidInitTimer+0 
-	MOVLW       1
-	MOVWF       FARG_TIMERS_vidInitTimer+0 
-	MOVLW       0
-	MOVWF       FARG_TIMERS_vidInitTimer+1 
-	MOVWF       FARG_TIMERS_vidInitTimer+2 
-	MOVWF       FARG_TIMERS_vidInitTimer+3 
-	MOVLW       64
-	MOVWF       FARG_TIMERS_vidInitTimer+0 
-	MOVLW       66
-	MOVWF       FARG_TIMERS_vidInitTimer+1 
-	MOVLW       15
-	MOVWF       FARG_TIMERS_vidInitTimer+2 
-	MOVLW       0
-	MOVWF       FARG_TIMERS_vidInitTimer+3 
-	CALL        _TIMERS_vidInitTimer+0, 0
-;main.c,14 :: 		START_TMR(TIMER0);
-	BSF         T0CON+0, 7 
-;main.c,15 :: 		while(1)
+;main.c,14 :: 		time.u8Minutes = 0;
+	CLRF        _time+1 
+;main.c,16 :: 		PWM_START();
+	BSF         T2CON+0, 2 
+;main.c,17 :: 		Delay_ms(5000);
+	MOVLW       51
+	MOVWF       R11, 0
+	MOVLW       187
+	MOVWF       R12, 0
+	MOVLW       223
+	MOVWF       R13, 0
 L_main0:
-;main.c,17 :: 		SEGMENT7_vidDisplayDigit(0x20, time.u8Seconds); // 0x00100000
-	MOVLW       32
-	MOVWF       FARG_SEGMENT7_vidDisplayDigit+0 
-	MOVF        _time+0, 0 
-	MOVWF       FARG_SEGMENT7_vidDisplayDigit+0 
-	CALL        _SEGMENT7_vidDisplayDigit+0, 0
-;main.c,18 :: 		if(INTCON.TMR0IF)
-	BTFSS       INTCON+0, 2 
-	GOTO        L_main2
-;main.c,20 :: 		UWAVE_UTIL_u8DecrementTime(REF(time));
-	MOVLW       _time+0
-	MOVWF       FARG_UWAVE_UTIL_u8DecrementTime+0 
-	MOVLW       hi_addr(_time+0)
-	MOVWF       FARG_UWAVE_UTIL_u8DecrementTime+1 
-	CALL        _UWAVE_UTIL_u8DecrementTime+0, 0
-;main.c,21 :: 		TIMERS_vidResetTimer(TIMER0);
-	CLRF        FARG_TIMERS_vidResetTimer+0 
-	CALL        _TIMERS_vidResetTimer+0, 0
-;main.c,22 :: 		START_TMR(TIMER0);
-	BSF         T0CON+0, 7 
-;main.c,23 :: 		}
-L_main2:
-;main.c,29 :: 		}
-	GOTO        L_main0
-;main.c,30 :: 		}
+	DECFSZ      R13, 1, 1
+	BRA         L_main0
+	DECFSZ      R12, 1, 1
+	BRA         L_main0
+	DECFSZ      R11, 1, 1
+	BRA         L_main0
+	NOP
+	NOP
+;main.c,18 :: 		PWM_HALT();
+	BCF         T2CON+0, 2 
+;main.c,37 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main

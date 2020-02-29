@@ -1503,6 +1503,7 @@ sdiv3232l
 sdo
 sdo_bit
 segment7_viddisplaydigit
+segment7_viddisplayfigure
 segment7_vidinit
 sen
 sen_bit
@@ -2309,7 +2310,7 @@ u16prescaler
 u16registerdisplaydataref
 u16registerdisplayselectref
 u16timedisplay
-u64initialcount
+u8endflag
 u8index
 u8keymap
 u8maskcolumns
@@ -2342,6 +2343,7 @@ uart1_tx_idle
 uart1_write
 uart1_write_text
 uldiv
+uwave_display_viddisplayend
 uwave_display_vidupdatetimedisplay
 uwave_sensors_vidinit
 uwave_util_u8decrementtime
