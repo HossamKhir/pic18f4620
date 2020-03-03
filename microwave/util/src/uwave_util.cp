@@ -10,6 +10,38 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef enum {
+ IntFlag_RB_INT1,
+ IntFlag_INT0_INT2,
+ IntFlag_TMR0
+} enInterruptFlag;
+
+typedef enum {
+ IntEn_RB_INT1 = 3,
+ IntEn_INT0_INT2,
+ IntEn_TMR0,
+ IntEn_PEIE,
+ IntEn_GIE
+} enInterruptEnable;
+
+typedef enum {
+ IntPr_RB,
+ IntPr_TMR0 = 2,
+ IntPr_INT1 = 6,
+ IntPr_INT2
+} enInterruptPriority;
+
+typedef enum {
+ Pr_Low,
+ Pr_High
+} enPriority;
+
+typedef enum {
+ EdgeSelExtInt2 = 4,
+ EdgeSelExtInt1,
+ EdgeSelExtInt0
+} enExtIntEdgeSelect;
+
+typedef enum {
  TIMER0,
  TIMER1,
  TIMER2,
@@ -74,7 +106,13 @@ typedef HeatingTime* HeatingTimeRef;
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_sensors.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
-#line 9 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_sensors.h"
+#line 1 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
+#line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
+#line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
+#line 44 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
+void INTERRUPT_vidInit(void);
+void INTERRUPT_vidSetPriority(enInterruptPriority,enPriority);
+#line 26 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_sensors.h"
 void UWAVE_SENSORS_vidInit(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_motor.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
@@ -85,6 +123,7 @@ void UWAVE_SENSORS_vidInit(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/timers.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
+#line 1 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
 #line 52 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/timers.h"
 void TIMERS_vidInitTimer(enTimer, enPrescale, enPostscale, uint64, uint64);
 void TIMERS_vidUpdateInitialCount(uint64 , enTimer, enPrescale, enPostscale);

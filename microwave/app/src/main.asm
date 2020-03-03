@@ -69,32 +69,11 @@ _main:
 	MOVLW       195
 	MOVWF       FARG_SEGMENT7_vidInit+0 
 	CALL        _SEGMENT7_vidInit+0, 0
-;main.c,13 :: 		time.u8Seconds = 3;
-	MOVLW       3
-	MOVWF       _time+0 
-;main.c,14 :: 		time.u8Minutes = 0;
-	CLRF        _time+1 
-;main.c,16 :: 		PWM_START();
-	BSF         T2CON+0, 2 
-;main.c,17 :: 		Delay_ms(5000);
-	MOVLW       51
-	MOVWF       R11, 0
-	MOVLW       187
-	MOVWF       R12, 0
-	MOVLW       223
-	MOVWF       R13, 0
+;main.c,14 :: 		while(1)
 L_main0:
-	DECFSZ      R13, 1, 1
-	BRA         L_main0
-	DECFSZ      R12, 1, 1
-	BRA         L_main0
-	DECFSZ      R11, 1, 1
-	BRA         L_main0
-	NOP
-	NOP
-;main.c,18 :: 		PWM_HALT();
-	BCF         T2CON+0, 2 
-;main.c,37 :: 		}
+;main.c,16 :: 		};
+	GOTO        L_main0
+;main.c,18 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main

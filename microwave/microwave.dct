@@ -804,6 +804,8 @@ intedg1
 intedg1_bit
 intedg2
 intedg2_bit
+interrupt_vidinit
+interrupt_vidsetpriority
 intsrc
 intsrc_bit
 inttohex

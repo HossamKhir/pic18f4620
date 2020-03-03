@@ -10,6 +10,38 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef enum {
+ IntFlag_RB_INT1,
+ IntFlag_INT0_INT2,
+ IntFlag_TMR0
+} enInterruptFlag;
+
+typedef enum {
+ IntEn_RB_INT1 = 3,
+ IntEn_INT0_INT2,
+ IntEn_TMR0,
+ IntEn_PEIE,
+ IntEn_GIE
+} enInterruptEnable;
+
+typedef enum {
+ IntPr_RB,
+ IntPr_TMR0 = 2,
+ IntPr_INT1 = 6,
+ IntPr_INT2
+} enInterruptPriority;
+
+typedef enum {
+ Pr_Low,
+ Pr_High
+} enPriority;
+
+typedef enum {
+ EdgeSelExtInt2 = 4,
+ EdgeSelExtInt1,
+ EdgeSelExtInt0
+} enExtIntEdgeSelect;
+
+typedef enum {
  TIMER0,
  TIMER1,
  TIMER2,

@@ -1,9 +1,9 @@
 #ifndef _TIMERS_H_
 #define _TIMERS_H_
 
-
 #include "data_types.h"
 #include "macros.h"
+#include "interrupt.h"
 
 #define TTIMER0CON  T0CON
 #define TTIMER1CON  T1CON

@@ -1,6 +1,8 @@
 main
 	__CC2DW
 	UWAVE_SENSORS_vidInit
+		INTERRUPT_vidInit
+		INTERRUPT_vidSetPriority
 	PWM_vidInit
 		Byte2Double
 			NRM4032

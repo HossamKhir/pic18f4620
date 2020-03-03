@@ -46,6 +46,12 @@ TIMERS_vidInitTimer(enTimer timerID,
     TIMERS_vidUpdateInitialCount(u64TargetTime, timerID, prescale, postscale);
     TIMERS_vidSetScale(timerID, prescale, postscale);
     TIMERS_vidResetTimer(timerID);
+
+    // TODO: configure interrupts
+    //===========================
+    
+    //===========================
+
 }
 
 void
