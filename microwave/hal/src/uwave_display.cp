@@ -10,24 +10,36 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef enum {
- IntFlag_RB_INT1,
- IntFlag_INT0_INT2,
- IntFlag_TMR0
-} enInterruptFlag;
-
-typedef enum {
- IntEn_RB_INT1 = 3,
- IntEn_INT0_INT2,
- IntEn_TMR0,
- IntEn_PEIE,
- IntEn_GIE
+ IntEn_TMR1_CCP2,
+ IntEn_TMR2_TMR3,
+ IntEn_CCP1_HLVD,
+ IntEn_RB_INT1_SSP_BCL,
+ IntEn_INT0_INT2_TX_EE,
+ IntEn_TMR0_RX,
+ IntEn_PEIE_ADC_CM,
+ IntEn_GIE_PSP_OSCF
 } enInterruptEnable;
 
 typedef enum {
- IntPr_RB,
- IntPr_TMR0 = 2,
- IntPr_INT1 = 6,
- IntPr_INT2
+ IntFlag_RB_INT1_TMR1_CCP2,
+ IntFlag_INT0_INT2_TMR2_TMR3,
+ IntFlag_TMR0_CCP1_HLVD,
+ IntFlag_SSP_BCL,
+ IntFlag_TX_EE,
+ IntFlag_RX,
+ IntFlag_ADC_CM,
+ IntFlag_PSP_OSCF
+} enInterruptFlag;
+
+typedef enum {
+ IntPr_RB_TMR1_CCP2,
+ IntPr_TMR2_TMR3,
+ IntPr_TMR0_CCP1_HLVD,
+ IntPr_SSP_BCL,
+ IntPr_TX_EE,
+ IntPr_RX,
+ IntPr_INT1_ADC_CM,
+ IntPr_INT2_PSP_OSCF
 } enInterruptPriority;
 
 typedef enum {
@@ -86,18 +98,16 @@ typedef enum {
  CLDL
 } enPWMMode;
 
-typedef struct {
- uint8 u8Seconds;
- uint8 u8Minutes;
- uint16 u16TimeDisplay;
-}HeatingTime;
+typedef enum {
+ STATE_IDLE,
+ STATE_HEAT
+} enStateMachine;
 
 typedef uint8* uint8Ref;
 typedef uint16* uint16Ref;
 typedef uint32* uint32Ref;
 typedef uint64* uint64Ref;
-
-typedef HeatingTime* HeatingTimeRef;
+#line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/data_types.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
@@ -105,32 +115,35 @@ typedef HeatingTime* HeatingTimeRef;
 void SEGMENT7_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8);
 void SEGMENT7_vidDisplayDigit(uint8, uint8);
 void SEGMENT7_vidDisplayFigure(uint8, uint8);
-#line 30 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef);
+#line 31 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/hal/src/uwave_display.c"
-uint8 u8SecondsUnits = 0;
-uint8 u8SecondsTens = 0;
-uint8 u8MinutesUnits = 0;
-uint8 u8MinutesTens = 0;
+static uint8 u8SecondsUnits = 0;
+static uint8 u8SecondsTens = 0;
+static uint8 u8MinutesUnits = 0;
+static uint8 u8MinutesTens = 0;
+
+static uint8 u8CurrentCursor = 0;
+
+
 
 static void
-vidGetTimeDigits(HeatingTimeRef timeoutRef)
+vidGetTimeDigits(uint32 u32Time)
 {
- u8SecondsUnits = (timeoutRef->u8Seconds) % 10;
- u8SecondsTens = (timeoutRef->u8Seconds) / 10;
- u8MinutesUnits = (timeoutRef->u8Minutes) % 10;
- u8MinutesTens = (timeoutRef->u8Minutes) / 10;
+ u8MinutesTens = u32Time / 1000;
+ u8MinutesUnits = (u32Time % 1000) / 100;
+ u8SecondsTens = (u32Time % 100) / 10;
+ u8SecondsUnits = (u32Time % 100) % 10;
 }
 
 void
-UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef timeoutRef)
+UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
 {
- static uint8 u8CurrentCursor = 0;
 
- vidGetTimeDigits(timeoutRef);
+ vidGetTimeDigits(u32Time);
 
- switch (u8CurrentCursor++)
+ switch (u8CurrentCursor)
  {
  case 0:
  SEGMENT7_vidDisplayDigit( (0x20) , u8SecondsUnits);
@@ -144,16 +157,14 @@ UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef timeoutRef)
  case 3:
  SEGMENT7_vidDisplayDigit( (0x04) , u8MinutesTens);
  break;
- default:
- u8CurrentCursor = 0;
  }
 
+ u8CurrentCursor = (u8CurrentCursor <  (((u32Time)/1000)?3:((u32Time)/100)?2:((u32Time)/10)?1:0) )? (u8CurrentCursor + 1) : 0;
 }
 
 void
 UWAVE_DISPLAY_vidDisplayEnd(void)
 {
- static char u8CurrentCursor = 0;
 
  switch (u8CurrentCursor++)
  {

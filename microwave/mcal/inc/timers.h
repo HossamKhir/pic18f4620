@@ -51,6 +51,7 @@
 
 void TIMERS_vidInitTimer(enTimer, enPrescale, enPostscale, uint64, uint64);
 void TIMERS_vidUpdateInitialCount(uint64 , enTimer, enPrescale, enPostscale);
-void TIMERS_vidResetTimer(uint8);
+void TIMERS_vidResetTimer(enTimer);
+void TIMERS_vidConfigTimerInterrupts(enTimer, enPriority);
 
 #endif /* _TIMERS_H_ */

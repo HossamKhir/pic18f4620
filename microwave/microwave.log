@@ -2,31 +2,33 @@
 warning: 0	1501	Specified search path does not exist: 'E:\embedded_diploma\projects\pic\microwave\inc'	 
 warning: 0	1502	Specified include path does not exist: 'E:\embedded_diploma\projects\pic\microwave\inc'	 
 hint: 0	1139	Available RAM: 3947 [bytes], Available ROM: 65536 [bytes]	 
-diagnostics: 0	126	All files Preprocessed in 984 ms	 
+diagnostics: 0	126	All files Preprocessed in 1078 ms	 
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 18	123	Compiled Successfully	main.c
+diagnostics: 9	123	Compiled Successfully	main.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 65	123	Compiled Successfully	segment7.c
+diagnostics: 69	123	Compiled Successfully	segment7.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 100	123	Compiled Successfully	keypad4x3.c
+diagnostics: 140	123	Compiled Successfully	keypad4x3.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 63	123	Compiled Successfully	uwave_display.c
+diagnostics: 64	123	Compiled Successfully	uwave_display.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 38	123	Compiled Successfully	uwave_util.c
+diagnostics: 124	123	Compiled Successfully	uwave_util.c
 diagnostics: 0	122	Compilation Started	data_types.h
 diagnostics: 19	123	Compiled Successfully	pwm.c
 diagnostics: 0	122	Compilation Started	data_types.h
 diagnostics: 40	123	Compiled Successfully	pwm.h
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 100	123	Compiled Successfully	timers.c
+diagnostics: 124	123	Compiled Successfully	timers.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 32	123	Compiled Successfully	uwave_sensors.c
+diagnostics: 29	123	Compiled Successfully	uwave_sensors.c
 diagnostics: 0	122	Compilation Started	data_types.h
-diagnostics: 29	123	Compiled Successfully	interrupt.c
-diagnostics: 0	127	All files Compiled in 1125 ms	 
-hint: 0	1144	Used RAM (bytes): 60 (2%)  Free RAM (bytes): 3887 (98%)	Used RAM (bytes): 60 (2%)  Free RAM (bytes): 3887 (98%)
-hint: 0	1144	Used ROM (bytes): 4266 (7%)  Free ROM (bytes): 61270 (93%)	Used ROM (bytes): 4266 (7%)  Free ROM (bytes): 61270 (93%)
+hint: 0	1004	interrupt handler (ISR_PriorityLow at 0x0018)	interrupt.c
+hint: 0	1004	interrupt handler (ISR_PriorityHigh at 0x0008)	interrupt.c
+diagnostics: 77	123	Compiled Successfully	interrupt.c
+diagnostics: 0	127	All files Compiled in 1219 ms	 
+hint: 0	1144	Used RAM (bytes): 74 (2%)  Free RAM (bytes): 3873 (98%)	Used RAM (bytes): 74 (2%)  Free RAM (bytes): 3873 (98%)
+hint: 0	1144	Used ROM (bytes): 6465 (10%)  Free ROM (bytes): 59071 (90%)	Used ROM (bytes): 6465 (10%)  Free ROM (bytes): 59071 (90%)
 diagnostics: 0	125	Project Linked Successfully	microwave.mcppi
-diagnostics: 0	128	Linked in 219 ms	 
-diagnostics: 0	129	Project 'microwave.mcppi' completed: 2438 ms	 
-diagnostics: 0	103	Finished successfully: 03 Mar 2020, 16:05:16	microwave.mcppi
+diagnostics: 0	128	Linked in 297 ms	 
+diagnostics: 0	129	Project 'microwave.mcppi' completed: 2688 ms	 
+diagnostics: 0	103	Finished successfully: 05 Mar 2020, 17:21:17	microwave.mcppi

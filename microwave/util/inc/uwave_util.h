@@ -14,14 +14,15 @@
 #define UWAVE_INIT() { \
                          LAMP_INIT(); \
                          UWAVE_HEATER_INIT(); \
-                         UWAVE_SENSORS_INIT();\
                          UWAVE_MOTOR_INIT(UWAVE_MOTOR_MODE,25,10,KHZ);\
                          UWAVE_KEYPAD_INIT(); \
+                         UWAVE_SENSORS_INIT();\
                          UWAVE_DISPLAY_INIT(); \
+                         TIMERS_vidInitTimer(TIMER0, PRE032, POS01, 250, MSECOND);\
+                         TIMERS_vidConfigTimerInterrupts(TIMER0,Pr_High);\
                      }
 
-void    UWAVE_UTIL_vidUpdateTime(HeatingTimeRef);
-void    UWAVE_UTIL_vidSetTime(HeatingTimeRef);
-uint8   UWAVE_UTIL_u8DecrementTime(HeatingTimeRef);
+uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+void UWAVE_UTIL_vidScheduler(void);
 
 #endif

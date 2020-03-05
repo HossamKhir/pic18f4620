@@ -1,8 +1,4 @@
 main
-	__CC2DW
-	UWAVE_SENSORS_vidInit
-		INTERRUPT_vidInit
-		INTERRUPT_vidSetPriority
 	PWM_vidInit
 		Byte2Double
 			NRM4032
@@ -65,4 +61,59 @@ main
 				Mul_32x32_U
 			TIMERS_vidResetTimer
 	KEYPAD4X3_vidInit
+	UWAVE_SENSORS_vidInit
+		INTERRUPT_vidInit
+		INTERRUPT_vidSetPriority
 	SEGMENT7_vidInit
+	TIMERS_vidInitTimer
+		Mul_32x32_U
+		TIMERS_vidUpdateInitialCount
+			Mul_32x32_U
+			Byte2Double
+				NRM4032
+					SETFUN32
+					FIXSIGN32
+					SETFOV32
+					RES032
+			Mul_32x32_FP
+				RES032
+				SETFOV32
+				SETFUN32
+			Longword2Double
+				NRM4032
+					SETFUN32
+					FIXSIGN32
+					SETFOV32
+					RES032
+			Div_32x32_FP
+				SETFDZ32
+				RES032
+				SETFOV32
+				SETFUN32
+			Double2Longword
+				SETIOV3224
+			Int2Double
+				NRM3232
+					RES032
+					SETFUN32
+					FIXSIGN32
+		TIMERS_vidSetScale
+			Mul_32x32_U
+		TIMERS_vidResetTimer
+	TIMERS_vidConfigTimerInterrupts
+		INTERRUPT_vidInit
+		INTERRUPT_vidSetPriority
+	UWAVE_UTIL_vidScheduler
+		KEYPAD4X3_u8GetKeyPressed
+		Mul_16x16_U
+		UWAVE_UTIL_u8DecrementTime
+			Div_16x16_U
+		UWAVE_DISPLAY_vidDisplayEnd
+			SEGMENT7_vidDisplayFigure
+		UWAVE_DISPLAY_vidUpdateTimeDisplay
+			vidGetTimeDigits
+				Div_16x16_U
+			SEGMENT7_vidDisplayDigit
+			Div_16x16_U
+ISR_PriorityLow
+ISR_PriorityHigh

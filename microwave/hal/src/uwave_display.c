@@ -1,50 +1,51 @@
 #include "uwave_display.h"
 
-uint8 u8SecondsUnits = 0;
-uint8 u8SecondsTens  = 0;
-uint8 u8MinutesUnits = 0;
-uint8 u8MinutesTens  = 0;
+static uint8 u8SecondsUnits = 0;
+static uint8 u8SecondsTens  = 0;
+static uint8 u8MinutesUnits = 0;
+static uint8 u8MinutesTens  = 0;
+
+static uint8 u8CurrentCursor = 0;
+
+#define UWAVE_DISPLAY_CURSOR_LIMIT(TIMEOUT) (((TIMEOUT)/1000)?3:((TIMEOUT)/100)?2:((TIMEOUT)/10)?1:0) 
 
 static void
-vidGetTimeDigits(HeatingTimeRef timeoutRef)
+vidGetTimeDigits(uint32 u32Time)
 {
-    u8SecondsUnits = (timeoutRef->u8Seconds) % 10;
-    u8SecondsTens  = (timeoutRef->u8Seconds) / 10;
-    u8MinutesUnits = (timeoutRef->u8Minutes) % 10;
-    u8MinutesTens  = (timeoutRef->u8Minutes) / 10;
+    u8MinutesTens   = u32Time / 1000;
+    u8MinutesUnits  = (u32Time % 1000) / 100;
+    u8SecondsTens   = (u32Time % 100) / 10;
+    u8SecondsUnits  = (u32Time % 100) % 10;
 }
 
 void
-UWAVE_DISPLAY_vidUpdateTimeDisplay(HeatingTimeRef timeoutRef)
+UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
 {
-    static uint8 u8CurrentCursor = 0;
 
-    vidGetTimeDigits(timeoutRef);
+    vidGetTimeDigits(u32Time);
     
-    switch (u8CurrentCursor++)
+    switch (u8CurrentCursor)
     {
         case 0:
-            SEGMENT7_vidDisplayDigit(MASK_SECONDS_UNITS, u8SecondsUnits);
+             SEGMENT7_vidDisplayDigit(MASK_SECONDS_UNITS, u8SecondsUnits);
         break;
         case 1:
-            SEGMENT7_vidDisplayDigit(MASK_SECONDS_TENS, u8SecondsTens);
+             SEGMENT7_vidDisplayDigit(MASK_SECONDS_TENS, u8SecondsTens);
         break;
         case 2:
-            SEGMENT7_vidDisplayDigit(MASK_MINUTES_UNITS, u8MinutesUnits);
+             SEGMENT7_vidDisplayDigit(MASK_MINUTES_UNITS, u8MinutesUnits);
         break;
         case 3:
-            SEGMENT7_vidDisplayDigit(MASK_MINUTES_TENS, u8MinutesTens);
+             SEGMENT7_vidDisplayDigit(MASK_MINUTES_TENS, u8MinutesTens);
         break;
-        default:
-            u8CurrentCursor = 0;
     }
 
+    u8CurrentCursor = (u8CurrentCursor < UWAVE_DISPLAY_CURSOR_LIMIT(u32Time))? (u8CurrentCursor + 1) : 0;
 }
 
 void
 UWAVE_DISPLAY_vidDisplayEnd(void)
 {
-    static char u8CurrentCursor = 0;
     
     switch (u8CurrentCursor++)
     {

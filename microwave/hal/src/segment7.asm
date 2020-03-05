@@ -47,12 +47,19 @@ L_end_SEGMENT7_vidInit:
 _SEGMENT7_vidDisplayDigit:
 
 ;segment7.c,51 :: 		uint8 u8Digit)
-;segment7.c,53 :: 		DISPLAY_SELECT = u8DisplaySelected;
+;segment7.c,53 :: 		DISPLAY_ACTIVATE();
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR0
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR0H
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR1
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR1H
+	MOVLW       0
+	ANDWF       POSTINC0+0, 1 
+;segment7.c,54 :: 		DISPLAY_SELECT = u8DisplaySelected;
 	MOVFF       _u16RegisterDisplaySelectRef+0, FSR1
 	MOVFF       _u16RegisterDisplaySelectRef+1, FSR1H
 	MOVF        FARG_SEGMENT7_vidDisplayDigit_u8DisplaySelected+0, 0 
 	MOVWF       POSTINC1+0 
-;segment7.c,55 :: 		DISPLAY_DATA   = ~u8Numbers[u8Digit];
+;segment7.c,56 :: 		DISPLAY_DATA   = ~u8Numbers[u8Digit];
 	MOVLW       _u8Numbers+0
 	ADDWF       FARG_SEGMENT7_vidDisplayDigit_u8Digit+0, 0 
 	MOVWF       TBLPTRL 
@@ -70,25 +77,46 @@ _SEGMENT7_vidDisplayDigit:
 	MOVFF       _u16RegisterDisplayDataRef+1, FSR1H
 	COMF        R0, 0 
 	MOVWF       POSTINC1+0 
-;segment7.c,56 :: 		}
+;segment7.c,57 :: 		DISPLAY_DEACTIVATE();
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR0
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR0H
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR1
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR1H
+	MOVLW       255
+	ANDWF       POSTINC0+0, 1 
+;segment7.c,58 :: 		}
 L_end_SEGMENT7_vidDisplayDigit:
 	RETURN      0
 ; end of _SEGMENT7_vidDisplayDigit
 
 _SEGMENT7_vidDisplayFigure:
 
-;segment7.c,60 :: 		uint8 u8Figure)
-;segment7.c,62 :: 		DISPLAY_SELECT = u8DisplaySelected;
+;segment7.c,62 :: 		uint8 u8Figure)
+;segment7.c,64 :: 		DISPLAY_ACTIVATE();
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR0
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR0H
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR1
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR1H
+	MOVLW       0
+	ANDWF       POSTINC0+0, 1 
+;segment7.c,65 :: 		DISPLAY_SELECT = u8DisplaySelected;
 	MOVFF       _u16RegisterDisplaySelectRef+0, FSR1
 	MOVFF       _u16RegisterDisplaySelectRef+1, FSR1H
 	MOVF        FARG_SEGMENT7_vidDisplayFigure_u8DisplaySelected+0, 0 
 	MOVWF       POSTINC1+0 
-;segment7.c,64 :: 		DISPLAY_DATA   = ~u8Figure;
+;segment7.c,67 :: 		DISPLAY_DATA   = ~u8Figure;
 	MOVFF       _u16RegisterDisplayDataRef+0, FSR1
 	MOVFF       _u16RegisterDisplayDataRef+1, FSR1H
 	COMF        FARG_SEGMENT7_vidDisplayFigure_u8Figure+0, 0 
 	MOVWF       POSTINC1+0 
-;segment7.c,65 :: 		}
+;segment7.c,68 :: 		DISPLAY_DEACTIVATE();
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR0
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR0H
+	MOVFF       _u16DirectionDisplayDataRef+0, FSR1
+	MOVFF       _u16DirectionDisplayDataRef+1, FSR1H
+	MOVLW       255
+	ANDWF       POSTINC0+0, 1 
+;segment7.c,69 :: 		}
 L_end_SEGMENT7_vidDisplayFigure:
 	RETURN      0
 ; end of _SEGMENT7_vidDisplayFigure

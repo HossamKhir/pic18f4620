@@ -18,11 +18,28 @@ uint8 u8MaskColumns;
 #define KEYPAD_ROWS                 (u8MaskRows)
 #define KEYPAD_COLUMNS              (u8MaskColumns)
 
+#define KEYPAD4X3_ACTIVATE()    { \
+                                    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
+                                    SET_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS); \
+                                    SET_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS); \
+                                    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
+                                    CLR_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);\
+                                }
+
+
+#define KEYPAD4X3_DEACTIVATE()  { \
+                                    CLR_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
+                                    CLR_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS); \
+                                    CLR_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS); \
+                                    CLR_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
+                                    SET_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);\
+                                }
+
 const uint8 u8Keymap[4][3] = {
-        { 's',  0,  'h'},   // s for start, h for halt
-        { 7,    8,  9},
-        { 4,    5,  6},
-        { 1,    2,  3},
+        { 's',  '0',  'h'},   // s for start, h for halt
+        { '7',  '8',  '9'},
+        { '4',  '5',  '6'},
+        { '1',  '2',  '3'},
 };
 
 void
@@ -43,19 +60,18 @@ KEYPAD4X3_vidInit(uint16Ref u16RowsDirectionRef,
     u8MaskRows    = u8RowsMask;
     u8MaskColumns = u8ColumnsMask;
 
-    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS);
-    SET_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS);
-    SET_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS);
-    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS);
-    CLR_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);
+    KEYPAD4X3_ACTIVATE();
 }
 
 uint8
 KEYPAD4X3_u8GetKeyPressed(void)
 {
+    static uint8 u8Pressed = '\0';
     uint8 u8Key = '\0';
     uint8 u8Column = 0;
     uint8 u8RowRead = 0;
+
+    KEYPAD4X3_ACTIVATE();
 
     SET_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS);
 
@@ -74,6 +90,8 @@ KEYPAD4X3_u8GetKeyPressed(void)
             SET_BIT(KEYPAD_DATA_COLUMNS, u8Column);
         }
     }
+
+    KEYPAD4X3_DEACTIVATE();
 
     if (u8Column != 3)
     {
@@ -95,6 +113,28 @@ KEYPAD4X3_u8GetKeyPressed(void)
                 u8Key = u8Key;
         }
     }
-    
-    return u8Key;
+
+    if ((u8Pressed) && (u8Pressed != u8Key))
+    {
+        // previous button released
+        u8Column = u8Pressed;
+        u8Pressed = u8Key;
+        u8Key = u8Column;
+    }
+    else if ((!u8Pressed) && u8Key)
+    {
+        // no previous button, current button pressed
+        u8Pressed = u8Key;
+        return '\0';
+    }
+    else if (u8Pressed == u8Key)
+    {
+        // previous button still pressed
+        return '\0';
+    }
+    else
+    {
+        // no previous key, no current key
+        return u8Key;
+    }
 }

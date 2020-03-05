@@ -50,16 +50,20 @@ void
 SEGMENT7_vidDisplayDigit(uint8 u8DisplaySelected,
                                  uint8 u8Digit)
 {
+    DISPLAY_ACTIVATE();
     DISPLAY_SELECT = u8DisplaySelected;
     // FIXME: the '~' is to overcome the bug in PicSimLab
     DISPLAY_DATA   = ~u8Numbers[u8Digit];
+    DISPLAY_DEACTIVATE();
 }
 
 void
 SEGMENT7_vidDisplayFigure(uint8 u8DisplaySelected,
                                 uint8 u8Figure)
 {
+    DISPLAY_ACTIVATE();
     DISPLAY_SELECT = u8DisplaySelected;
     // FIXME: the '~' is to overcome the bug in PicSimLab
     DISPLAY_DATA   = ~u8Figure;
+    DISPLAY_DEACTIVATE();
 }

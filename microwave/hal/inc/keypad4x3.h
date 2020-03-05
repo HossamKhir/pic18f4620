@@ -7,7 +7,6 @@
 
 void KEYPAD4X3_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8,
      uint8);
-
 uint8 KEYPAD4X3_u8GetKeyPressed(void);
 
 #endif

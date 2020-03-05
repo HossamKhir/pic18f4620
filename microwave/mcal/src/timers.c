@@ -1,6 +1,6 @@
 #include "timers.h"
 
-static uint64 u64InitialCount = 0;
+uint64 u64InitialCount = 0;
 
 // mapping timers to a map of prescalers, prescaler mapping register value to divisor
 const uint16 u16Prescaler[4][9][2] = {
@@ -46,12 +46,6 @@ TIMERS_vidInitTimer(enTimer timerID,
     TIMERS_vidUpdateInitialCount(u64TargetTime, timerID, prescale, postscale);
     TIMERS_vidSetScale(timerID, prescale, postscale);
     TIMERS_vidResetTimer(timerID);
-
-    // TODO: configure interrupts
-    //===========================
-    
-    //===========================
-
 }
 
 void
@@ -95,6 +89,36 @@ TIMERS_vidResetTimer(enTimer timerID)
             // FIXME: timer 2 has no high & low, but period & register
             PR2 =   GET_TIME_REG_LOW(u64InitialCount);
             CLR_TMR_INT_FLAG(TIMER2);
+        break;
+    }
+}
+
+void
+TIMERS_vidConfigTimerInterrupts(enTimer timerID, enPriority priority)
+{
+    INTERRUPT_vidInit();
+
+    switch(timerID)
+    {
+        case TIMER0:
+            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR0,IntFlag_TMR0_CCP1_HLVD);
+            INTERRUPT_vidSetPriority(IntPr_TMR0_CCP1_HLVD, priority);
+            INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR0,IntEn_TMR0_RX);
+        break;
+        case TIMER1:
+            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR1_TMR2,IntFlag_RB_INT1_TMR1_CCP2);
+            INTERRUPT_vidSetPriority(IntPr_RB_TMR1_CCP2, priority);
+            INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR1_TMR2,IntEn_TMR1_CCP2);
+        break;
+        case TIMER2:
+            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR1_TMR2,IntFlag_INT0_INT2_TMR2_TMR3);
+            INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
+            INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR1_TMR2,IntEn_TMR2_TMR3);
+        break;
+        case TIMER3:
+            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR3,IntFlag_INT0_INT2_TMR2_TMR3);
+            INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
+            INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR3,IntEn_TMR2_TMR3);
         break;
     }
 }
