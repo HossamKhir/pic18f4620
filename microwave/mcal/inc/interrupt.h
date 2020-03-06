@@ -91,7 +91,7 @@
 #define INTERRUPT_INT2_DEACTIVATE()             CLR_BIT(INTERRUPT_REG_INT_DIR,2)
 
 extern uint8 u8OverflowFlag;
-extern uint64 u64InitialCount;
+extern uint32 u64InitialCount;
 
 void INTERRUPT_vidInit(void);
 void INTERRUPT_vidSetPriority(enInterruptPriority,enPriority);

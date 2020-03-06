@@ -5,9 +5,9 @@
 
 
 typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+typedef unsigned int uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef enum {
  IntEn_TMR1_CCP2,
@@ -156,14 +156,14 @@ uint8 KEYPAD4X3_u8GetKeyPressed(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
 #line 31 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
-#line 25 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
-uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+#line 55 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
+uint8 UWAVE_UTIL_u8DecrementTime(uint16Ref);
 void UWAVE_UTIL_vidScheduler(void);
 #line 93 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
 extern uint8 u8OverflowFlag;
-extern uint64 u64InitialCount;
+extern uint32 u64InitialCount;
 
 void INTERRUPT_vidInit(void);
 void INTERRUPT_vidSetPriority(enInterruptPriority,enPriority);
@@ -173,7 +173,7 @@ void TIMERS_vidUpdateInitialCount(uint64 , enTimer, enPrescale, enPostscale);
 void TIMERS_vidResetTimer(enTimer);
 void TIMERS_vidConfigTimerInterrupts(enTimer, enPriority);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/mcal/src/timers.c"
-uint64 u64InitialCount = 0;
+uint32 u64InitialCount = 0;
 
 
 const uint16 u16Prescaler[4][9][2] = {
@@ -233,10 +233,10 @@ TIMERS_vidUpdateInitialCount(uint64 u64TargetTime,
  case TIMER0:
  case TIMER1:
  case TIMER3:
- u64InitialCount = ( (0xFFFF)  + 1) - (uint64)(u64TargetTime / ( ((1.0/( 8000000UL /4.0))* 1000000UL )  * (double)u16Prescaler[timerID][prescale][1]));
+ u64InitialCount = ( (0xFFFF)  + 1) - (uint32)(u64TargetTime / ( ((1.0/( 8000000UL /4.0))* 1000000UL )  * (double)u16Prescaler[timerID][prescale][1]));
  break;
  case TIMER2:
- u64InitialCount = (uint64)(u64TargetTime / ( ((1.0/( 8000000UL /4.0))* 1000000UL )  * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
+ u64InitialCount = (uint32)(u64TargetTime / ( ((1.0/( 8000000UL /4.0))* 1000000UL )  * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
  break;
  }
 }

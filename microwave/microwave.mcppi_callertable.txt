@@ -1,11 +1,10 @@
 main
 	PWM_vidInit
-		Byte2Double
-			NRM4032
+		Word2Double
+			NRM3232
+				RES032
 				SETFUN32
 				FIXSIGN32
-				SETFOV32
-				RES032
 		Div_32x32_FP
 			SETFDZ32
 			RES032
@@ -21,7 +20,7 @@ main
 			RES032
 			SETFOV32
 			SETFUN32
-		Double2Byte
+		Double2Word
 			SETIOV3224
 		Double2Longword
 			SETIOV3224
@@ -29,12 +28,11 @@ main
 			Mul_32x32_U
 			TIMERS_vidUpdateInitialCount
 				Mul_32x32_U
-				Byte2Double
-					NRM4032
+				Word2Double
+					NRM3232
+						RES032
 						SETFUN32
 						FIXSIGN32
-						SETFOV32
-						RES032
 				Mul_32x32_FP
 					RES032
 					SETFOV32
@@ -69,12 +67,11 @@ main
 		Mul_32x32_U
 		TIMERS_vidUpdateInitialCount
 			Mul_32x32_U
-			Byte2Double
-				NRM4032
+			Word2Double
+				NRM3232
+					RES032
 					SETFUN32
 					FIXSIGN32
-					SETFOV32
-					RES032
 			Mul_32x32_FP
 				RES032
 				SETFOV32

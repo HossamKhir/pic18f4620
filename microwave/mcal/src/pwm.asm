@@ -15,7 +15,9 @@ _PWM_vidInit:
 ;pwm.c,12 :: 		u16DutyCycle = (uint16)((u16DutyCycle / 100.0) * (FOSC / (double)(PRE004 * POS01 * (u64PWMFreq * u64FreqUnit))));
 	MOVF        FARG_PWM_vidInit_u16DutyCycle+0, 0 
 	MOVWF       R0 
-	CALL        _Byte2Double+0, 0
+	MOVF        FARG_PWM_vidInit_u16DutyCycle+1, 0 
+	MOVWF       R1 
+	CALL        _Word2Double+0, 0
 	MOVLW       0
 	MOVWF       R4 
 	MOVLW       0
@@ -64,18 +66,24 @@ _PWM_vidInit:
 	MOVF        FLOC__PWM_vidInit+3, 0 
 	MOVWF       R7 
 	CALL        _Mul_32x32_FP+0, 0
-	CALL        _Double2Byte+0, 0
+	CALL        _Double2Word+0, 0
 	MOVF        R0, 0 
 	MOVWF       FARG_PWM_vidInit_u16DutyCycle+0 
+	MOVF        R1, 0 
+	MOVWF       FARG_PWM_vidInit_u16DutyCycle+1 
 ;pwm.c,13 :: 		PWM_SET_DUTY_CYCLE(u16DutyCycle);
 	MOVF        R0, 0 
-	MOVWF       R1 
-	RRCF        R1, 1 
-	BCF         R1, 7 
-	RRCF        R1, 1 
-	BCF         R1, 7 
+	MOVWF       R2 
+	MOVF        R1, 0 
+	MOVWF       R3 
+	RRCF        R3, 1 
+	RRCF        R2, 1 
+	BCF         R3, 7 
+	RRCF        R3, 1 
+	RRCF        R2, 1 
+	BCF         R3, 7 
 	MOVLW       255
-	ANDWF       R1, 0 
+	ANDWF       R2, 0 
 	MOVWF       R0 
 	MOVF        R0, 0 
 	MOVWF       CCPR1L+0 

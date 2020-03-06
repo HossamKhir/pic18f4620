@@ -20,6 +20,4 @@
                 UWAVE_HEATER_OFF(); \
             }
 
-            
-
 #endif /* _UWAVE_HEATER_H_ */

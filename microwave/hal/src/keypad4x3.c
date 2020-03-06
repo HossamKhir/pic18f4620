@@ -1,37 +1,31 @@
 #include "keypad4x3.h"
 
-uint16Ref u16DirectionRowsRef;
-uint16Ref u16DirectionColumnsRef;
+uint8Ref u8DirectionRowsRef;
+uint8Ref u8DirectionColumnsRef;
 
-uint16Ref u16DataRowsRef;
-uint16Ref u16DataColumnsRef;
+uint8Ref u8DataRowsRef;
+uint8Ref u8DataColumnsRef;
 
 uint8 u8MaskRows;
 uint8 u8MaskColumns;
 
-#define KEYPAD_DIRECTION_ROWS       (DEREF(u16DirectionRowsRef))
-#define KEYPAD_DIRECTION_COLUMNS    (DEREF(u16DirectionColumnsRef))
+#define KEYPAD_DIRECTION_ROWS       (DEREF(u8DirectionRowsRef))
+#define KEYPAD_DIRECTION_COLUMNS    (DEREF(u8DirectionColumnsRef))
 
-#define KEYPAD_DATA_ROWS            (DEREF(u16DataRowsRef))
-#define KEYPAD_DATA_COLUMNS         (DEREF(u16DataColumnsRef))
+#define KEYPAD_DATA_ROWS            (DEREF(u8DataRowsRef))
+#define KEYPAD_DATA_COLUMNS         (DEREF(u8DataColumnsRef))
 
 #define KEYPAD_ROWS                 (u8MaskRows)
 #define KEYPAD_COLUMNS              (u8MaskColumns)
 
 #define KEYPAD4X3_ACTIVATE()    { \
-                                    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
                                     SET_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS); \
-                                    SET_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS); \
-                                    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
                                     CLR_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);\
                                 }
 
 
 #define KEYPAD4X3_DEACTIVATE()  { \
-                                    CLR_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
                                     CLR_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS); \
-                                    CLR_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS); \
-                                    CLR_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS); \
                                     SET_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);\
                                 }
 
@@ -43,24 +37,28 @@ const uint8 u8Keymap[4][3] = {
 };
 
 void
-KEYPAD4X3_vidInit(uint16Ref u16RowsDirectionRef,
-                            uint16Ref u16ColumnsDirectionRef,
-                            uint16Ref u16RowsDataRef,
-                            uint16Ref u16ColumnsDataRef,
-                            uint8 u8RowsMask,
-                            uint8 u8ColumnsMask)
+KEYPAD4X3_vidInit(uint8Ref u8RowsDirectionRef,
+                    uint8Ref u8ColumnsDirectionRef,
+                    uint8Ref u8RowsDataRef,
+                    uint8Ref u8ColumnsDataRef,
+                    uint8 u8RowsMask,
+                    uint8 u8ColumnsMask)
 {
     ADCON1 |= 0X0F;
     
-    u16DirectionRowsRef    = u16RowsDirectionRef;
-    u16DirectionColumnsRef = u16ColumnsDirectionRef;
-    u16DataRowsRef         = u16RowsDataRef;
-    u16DataColumnsRef      = u16ColumnsDataRef;
+    u8DirectionRowsRef    = u8RowsDirectionRef;
+    u8DirectionColumnsRef = u8ColumnsDirectionRef;
+    u8DataRowsRef         = u8RowsDataRef;
+    u8DataColumnsRef      = u8ColumnsDataRef;
     
     u8MaskRows    = u8RowsMask;
     u8MaskColumns = u8ColumnsMask;
 
-    KEYPAD4X3_ACTIVATE();
+    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS);
+    SET_BITS(KEYPAD_DATA_COLUMNS, KEYPAD_COLUMNS);
+    SET_BITS(KEYPAD_DATA_ROWS, KEYPAD_ROWS);
+    SET_BITS(KEYPAD_DIRECTION_ROWS, KEYPAD_ROWS);
+    CLR_BITS(KEYPAD_DIRECTION_COLUMNS, KEYPAD_COLUMNS);
 }
 
 uint8

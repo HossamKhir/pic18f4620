@@ -7,7 +7,7 @@ timers_TIMERS_vidSetScale:
 ;timers.c,21 :: 		case TIMER0:
 L_timers_TIMERS_vidSetScale2:
 ;timers.c,22 :: 		GET_TMR_CTRL_REG(TIMER0)   |=  (u16Prescaler[timerID][prescale][0] << (4 * (timerID % 2)));
-	MOVLW       18
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -35,6 +35,11 @@ L_timers_TIMERS_vidSetScale2:
 	MOVWF       R1 
 	MOVWF       R2 
 	MOVWF       R3 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
@@ -79,7 +84,7 @@ L_timers_TIMERS_vidSetScale26:
 ;timers.c,24 :: 		case TIMER1:
 L_timers_TIMERS_vidSetScale3:
 ;timers.c,25 :: 		GET_TMR_CTRL_REG(TIMER1)   |=  (u16Prescaler[timerID][prescale][0] << (4 * (timerID % 2)));
-	MOVLW       18
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -107,6 +112,11 @@ L_timers_TIMERS_vidSetScale3:
 	MOVWF       R1 
 	MOVWF       R2 
 	MOVWF       R3 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
@@ -151,7 +161,7 @@ L_timers_TIMERS_vidSetScale28:
 ;timers.c,27 :: 		case TIMER2:
 L_timers_TIMERS_vidSetScale4:
 ;timers.c,28 :: 		GET_TMR_CTRL_REG(TIMER2)   |=  (u16Prescaler[timerID][prescale][0] << (4 * (timerID % 2)));
-	MOVLW       18
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -179,6 +189,11 @@ L_timers_TIMERS_vidSetScale4:
 	MOVWF       R1 
 	MOVWF       R2 
 	MOVWF       R3 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
@@ -234,7 +249,7 @@ L_timers_TIMERS_vidSetScale30:
 ;timers.c,31 :: 		case TIMER3:
 L_timers_TIMERS_vidSetScale5:
 ;timers.c,32 :: 		GET_TMR_CTRL_REG(TIMER3)   |=  (u16Prescaler[timerID][prescale][0] << (4 * (timerID % 2)));
-	MOVLW       18
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -262,6 +277,11 @@ L_timers_TIMERS_vidSetScale5:
 	MOVWF       R1 
 	MOVWF       R2 
 	MOVWF       R3 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
@@ -400,8 +420,8 @@ L_TIMERS_vidUpdateInitialCount8:
 L_TIMERS_vidUpdateInitialCount9:
 ;timers.c,62 :: 		case TIMER3:
 L_TIMERS_vidUpdateInitialCount10:
-;timers.c,63 :: 		u64InitialCount = (FULL_COUNT + 1) - (uint64)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1]));
-	MOVLW       18
+;timers.c,63 :: 		u64InitialCount = (FULL_COUNT + 1) - (uint32)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1]));
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -434,13 +454,18 @@ L_TIMERS_vidUpdateInitialCount10:
 	RLCF        R1, 1 
 	RLCF        R2, 1 
 	RLCF        R3, 1 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	MOVF        R5, 0 
 	ADDWF       R0, 1 
 	MOVF        R6, 0 
 	ADDWFC      R1, 1 
 	MOVF        R7, 0 
 	ADDWFC      R2, 1 
-	MOVLW       1
+	MOVLW       2
 	ADDWF       R0, 0 
 	MOVWF       TBLPTRL 
 	MOVLW       0
@@ -451,7 +476,9 @@ L_TIMERS_vidUpdateInitialCount10:
 	MOVWF       TBLPTRU 
 	TBLRD*+
 	MOVFF       TABLAT+0, R0
-	CALL        _Byte2Double+0, 0
+	TBLRD*+
+	MOVFF       TABLAT+0, R1
+	CALL        _Word2Double+0, 0
 	MOVLW       0
 	MOVWF       R4 
 	MOVLW       0
@@ -508,8 +535,8 @@ L_TIMERS_vidUpdateInitialCount10:
 	GOTO        L_TIMERS_vidUpdateInitialCount7
 ;timers.c,65 :: 		case TIMER2:
 L_TIMERS_vidUpdateInitialCount11:
-;timers.c,66 :: 		u64InitialCount = (uint64)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
-	MOVLW       18
+;timers.c,66 :: 		u64InitialCount = (uint32)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
+	MOVLW       36
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
@@ -542,13 +569,18 @@ L_TIMERS_vidUpdateInitialCount11:
 	RLCF        R1, 1 
 	RLCF        R2, 1 
 	RLCF        R3, 1 
+	RLCF        R0, 1 
+	BCF         R0, 0 
+	RLCF        R1, 1 
+	RLCF        R2, 1 
+	RLCF        R3, 1 
 	MOVF        R5, 0 
 	ADDWF       R0, 1 
 	MOVF        R6, 0 
 	ADDWFC      R1, 1 
 	MOVF        R7, 0 
 	ADDWFC      R2, 1 
-	MOVLW       1
+	MOVLW       2
 	ADDWF       R0, 0 
 	MOVWF       TBLPTRL 
 	MOVLW       0
@@ -559,7 +591,9 @@ L_TIMERS_vidUpdateInitialCount11:
 	MOVWF       TBLPTRU 
 	TBLRD*+
 	MOVFF       TABLAT+0, R0
-	CALL        _Byte2Double+0, 0
+	TBLRD*+
+	MOVFF       TABLAT+0, R1
+	CALL        _Word2Double+0, 0
 	MOVLW       0
 	MOVWF       R4 
 	MOVLW       0

@@ -1,27 +1,27 @@
 
 uwave_display_vidGetTimeDigits:
 
-;uwave_display.c,13 :: 		vidGetTimeDigits(uint32 u32Time)
-;uwave_display.c,15 :: 		u8MinutesTens   = u32Time / 1000;
+;uwave_display.c,13 :: 		vidGetTimeDigits(uint16 u16Time)
+;uwave_display.c,15 :: 		u8MinutesTens   = u16Time / 1000;
 	MOVLW       232
 	MOVWF       R4 
 	MOVLW       3
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+0, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+1, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
 	MOVWF       uwave_display_u8MinutesTens+0 
-;uwave_display.c,16 :: 		u8MinutesUnits  = (u32Time % 1000) / 100;
+;uwave_display.c,16 :: 		u8MinutesUnits  = (u16Time % 1000) / 100;
 	MOVLW       232
 	MOVWF       R4 
 	MOVLW       3
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+0, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+1, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R8, 0 
@@ -35,14 +35,14 @@ uwave_display_vidGetTimeDigits:
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
 	MOVWF       uwave_display_u8MinutesUnits+0 
-;uwave_display.c,17 :: 		u8SecondsTens   = (u32Time % 100) / 10;
+;uwave_display.c,17 :: 		u8SecondsTens   = (u16Time % 100) / 10;
 	MOVLW       100
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+0, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u32Time+1, 0 
+	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R8, 0 
@@ -64,7 +64,7 @@ uwave_display_vidGetTimeDigits:
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
 	MOVWF       uwave_display_u8SecondsTens+0 
-;uwave_display.c,18 :: 		u8SecondsUnits  = (u32Time % 100) % 10;
+;uwave_display.c,18 :: 		u8SecondsUnits  = (u16Time % 100) % 10;
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
@@ -87,12 +87,12 @@ L_end_vidGetTimeDigits:
 
 _UWAVE_DISPLAY_vidUpdateTimeDisplay:
 
-;uwave_display.c,22 :: 		UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
-;uwave_display.c,25 :: 		vidGetTimeDigits(u32Time);
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+0, 0 
-	MOVWF       FARG_uwave_display_vidGetTimeDigits_u32Time+0 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+1, 0 
-	MOVWF       FARG_uwave_display_vidGetTimeDigits_u32Time+1 
+;uwave_display.c,22 :: 		UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16 u16Time)
+;uwave_display.c,25 :: 		vidGetTimeDigits(u16Time);
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+0, 0 
+	MOVWF       FARG_uwave_display_vidGetTimeDigits_u16Time+0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+1, 0 
+	MOVWF       FARG_uwave_display_vidGetTimeDigits_u16Time+1 
 	CALL        uwave_display_vidGetTimeDigits+0, 0
 ;uwave_display.c,27 :: 		switch (u8CurrentCursor)
 	GOTO        L_UWAVE_DISPLAY_vidUpdateTimeDisplay0
@@ -155,14 +155,14 @@ L_UWAVE_DISPLAY_vidUpdateTimeDisplay0:
 	BTFSC       STATUS+0, 2 
 	GOTO        L_UWAVE_DISPLAY_vidUpdateTimeDisplay5
 L_UWAVE_DISPLAY_vidUpdateTimeDisplay1:
-;uwave_display.c,43 :: 		u8CurrentCursor = (u8CurrentCursor < UWAVE_DISPLAY_CURSOR_LIMIT(u32Time))? (u8CurrentCursor + 1) : 0;
+;uwave_display.c,43 :: 		u8CurrentCursor = (u8CurrentCursor < UWAVE_DISPLAY_CURSOR_LIMIT(u16Time))? (u8CurrentCursor + 1) : 0;
 	MOVLW       232
 	MOVWF       R4 
 	MOVLW       3
 	MOVWF       R5 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+0, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+1, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
@@ -177,9 +177,9 @@ L_UWAVE_DISPLAY_vidUpdateTimeDisplay6:
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+0, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+1, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
@@ -194,9 +194,9 @@ L_UWAVE_DISPLAY_vidUpdateTimeDisplay8:
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+0, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u32Time+1, 0 
+	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 

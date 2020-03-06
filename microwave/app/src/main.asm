@@ -13,6 +13,8 @@ _main:
 	MOVWF       FARG_PWM_vidInit+0 
 	MOVLW       25
 	MOVWF       FARG_PWM_vidInit+0 
+	MOVLW       0
+	MOVWF       FARG_PWM_vidInit+1 
 	MOVLW       10
 	MOVWF       FARG_PWM_vidInit+0 
 	MOVLW       0

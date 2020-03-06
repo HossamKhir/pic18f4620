@@ -10,19 +10,19 @@ static uint8 u8CurrentCursor = 0;
 #define UWAVE_DISPLAY_CURSOR_LIMIT(TIMEOUT) (((TIMEOUT)/1000)?3:((TIMEOUT)/100)?2:((TIMEOUT)/10)?1:0) 
 
 static void
-vidGetTimeDigits(uint32 u32Time)
+UWAVE_DISPLAY_vidGetTimeDigits(uint16 u16Time)
 {
-    u8MinutesTens   = u32Time / 1000;
-    u8MinutesUnits  = (u32Time % 1000) / 100;
-    u8SecondsTens   = (u32Time % 100) / 10;
-    u8SecondsUnits  = (u32Time % 100) % 10;
+    u8MinutesTens   = u16Time / 1000;
+    u8MinutesUnits  = (u16Time % 1000) / 100;
+    u8SecondsTens   = (u16Time % 100) / 10;
+    u8SecondsUnits  = (u16Time % 100) % 10;
 }
 
 void
-UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
+UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16 u16Time)
 {
 
-    vidGetTimeDigits(u32Time);
+    UWAVE_DISPLAY_vidGetTimeDigits(u16Time);
     
     switch (u8CurrentCursor)
     {
@@ -40,7 +40,7 @@ UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
         break;
     }
 
-    u8CurrentCursor = (u8CurrentCursor < UWAVE_DISPLAY_CURSOR_LIMIT(u32Time))? (u8CurrentCursor + 1) : 0;
+    u8CurrentCursor = (u8CurrentCursor < UWAVE_DISPLAY_CURSOR_LIMIT(u16Time))? (u8CurrentCursor + 1) : 0;
 }
 
 void

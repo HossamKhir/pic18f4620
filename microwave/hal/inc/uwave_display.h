@@ -28,7 +28,7 @@
             UWAVE_DISPLAY,\
             MASK_UWAVE_DISPLAY_SELECT);
 
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
 
 #endif

@@ -5,9 +5,9 @@
 
 
 typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+typedef unsigned int uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef enum {
  IntEn_TMR1_CCP2,
@@ -161,14 +161,14 @@ uint8 KEYPAD4X3_u8GetKeyPressed(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
 #line 31 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
-#line 25 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
-uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+#line 55 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
+uint8 UWAVE_UTIL_u8DecrementTime(uint16Ref);
 void UWAVE_UTIL_vidScheduler(void);
 #line 93 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
 extern uint8 u8OverflowFlag;
-extern uint64 u64InitialCount;
+extern uint32 u64InitialCount;
 
 void INTERRUPT_vidInit(void);
 void INTERRUPT_vidSetPriority(enInterruptPriority,enPriority);
@@ -180,24 +180,31 @@ void UWAVE_SENSORS_vidInit(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_motor.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_keypad.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-#line 25 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
-uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+#line 55 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
+uint8 UWAVE_UTIL_u8DecrementTime(uint16Ref);
 void UWAVE_UTIL_vidScheduler(void);
-#line 3 "E:/embedded_diploma/projects/pic/microwave/util/src/uwave_util.c"
+#line 32 "E:/embedded_diploma/projects/pic/microwave/util/src/uwave_util.c"
 uint8 u8OverflowFlag = 0;
 uint8 u8HeatingEndFlag = 0;
 uint8 u8WeightFound = 0;
 uint8 u8DoorClosed = 1;
-uint32 u32HeatingTime = 90;
+uint16 u16HeatingTime = 90;
 
 enStateMachine currentState = STATE_IDLE;
 
+
+
+
+
+
+
+
 uint8
-UWAVE_UTIL_u8DecrementTime(uint32Ref u32TimeRef)
+UWAVE_UTIL_u8DecrementTime(uint16Ref u16TimeRef)
 {
- if ( (*(u32TimeRef)) )
+ if ( (*(u16TimeRef)) )
  {
-  (*(u32TimeRef))  -= ( (*(u32TimeRef))  % 100)? 1 : 41;
+  (*(u16TimeRef))  -= ( (*(u16TimeRef))  % 100)? 1 : 41;
  return 0;
  }
  return 1;
@@ -212,7 +219,7 @@ UWAVE_UTIL_vidScheduler(void)
  {
  if (u8OverflowFlag)
  {
- u8Key = KEYPAD4X3_u8GetKeyPressed();
+ u8Key =  KEYPAD4X3_u8GetKeyPressed() ;
 
 
   { ( (TRISB) |=(1<<1)) ; ( (TRISB) |=(1<<2)) ; } ;
@@ -223,12 +230,13 @@ UWAVE_UTIL_vidScheduler(void)
  switch (u8Key)
  {
  case 's':
- if (u8DoorClosed && u8WeightFound)
+ if (u8DoorClosed && u8WeightFound && u16HeatingTime)
  {
  currentState = STATE_HEAT;
  u8HeatingEndFlag = 0;
   ( ( T2CON . TMR2ON =1) ) ;
   ( ( (PORTC) |=(1<< (0x05) )) ) ;
+  ( (( (PORTB) )=(( (PORTB) )|( (0x80) ))) ) ;
  }
  else
  {
@@ -236,7 +244,8 @@ UWAVE_UTIL_vidScheduler(void)
  }
  break;
  case 'h':
- u32HeatingTime = 0;
+ u8HeatingEndFlag = 0;
+ u16HeatingTime = 0;
  break;
  case '0':
  case '1':
@@ -248,22 +257,21 @@ UWAVE_UTIL_vidScheduler(void)
  case '7':
  case '8':
  case '9':
- u32HeatingTime = (u32HeatingTime * 10) + u8Key;
+ u8HeatingEndFlag = 0;
+ u16HeatingTime = (u16HeatingTime * 10) + (u8Key - '0');
  break;
  }
  break;
  case STATE_HEAT:
-
-
  if (u8OverflowFlag >= 3)
  {
-
  u8OverflowFlag = 0;
 
- if(UWAVE_UTIL_u8DecrementTime( (&(u32HeatingTime)) ))
+ if(UWAVE_UTIL_u8DecrementTime( (&(u16HeatingTime)) ))
  {
   ( ( (PORTC) &=(~(1<< (0x05) ))) ) ;
   ( ( T2CON . TMR2ON =0) ) ;
+  ( (( (PORTB) )=(( (PORTB) )&(~ (0x80) ))) ) ;
  u8HeatingEndFlag = 1;
  }
  else
@@ -271,7 +279,6 @@ UWAVE_UTIL_vidScheduler(void)
 
  }
  }
-
  switch (u8Key)
  {
  case 's':
@@ -281,18 +288,20 @@ UWAVE_UTIL_vidScheduler(void)
  currentState = STATE_IDLE;
   ( ( T2CON . TMR2ON =0) ) ;
   ( ( (PORTC) &=(~(1<< (0x05) ))) ) ;
+  ( (( (PORTB) )=(( (PORTB) )&(~ (0x80) ))) ) ;
  break;
  }
  break;
  }
  }
 
- if (currentState == STATE_HEAT && !(u8DoorClosed && u8WeightFound))
+ if ((currentState == STATE_HEAT) && !(u8DoorClosed && u8WeightFound))
  {
 
  currentState = STATE_IDLE;
   ( ( T2CON . TMR2ON =0) ) ;
-  ( ( (PORTC) |=(1<< (0x05) )) ) ;
+  ( ( (PORTC) &=(~(1<< (0x05) ))) ) ;
+  ( (( (PORTB) )=(( (PORTB) )&(~ (0x80) ))) ) ;
  }
 
  if (u8HeatingEndFlag)
@@ -301,7 +310,7 @@ UWAVE_UTIL_vidScheduler(void)
  }
  else
  {
- UWAVE_DISPLAY_vidUpdateTimeDisplay(u32HeatingTime);
+ UWAVE_DISPLAY_vidUpdateTimeDisplay(u16HeatingTime);
  }
  }
 

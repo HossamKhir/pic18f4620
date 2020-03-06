@@ -5,9 +5,9 @@
 
 
 typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+typedef unsigned int uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef enum {
  IntEn_TMR1_CCP2,
@@ -120,15 +120,15 @@ void KEYPAD4X3_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8,
  uint8);
 uint8 KEYPAD4X3_u8GetKeyPressed(void);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/hal/src/keypad4x3.c"
-uint16Ref u16DirectionRowsRef;
-uint16Ref u16DirectionColumnsRef;
+uint8Ref u8DirectionRowsRef;
+uint8Ref u8DirectionColumnsRef;
 
-uint16Ref u16DataRowsRef;
-uint16Ref u16DataColumnsRef;
+uint8Ref u8DataRowsRef;
+uint8Ref u8DataColumnsRef;
 
 uint8 u8MaskRows;
 uint8 u8MaskColumns;
-#line 38 "E:/embedded_diploma/projects/pic/microwave/hal/src/keypad4x3.c"
+#line 32 "E:/embedded_diploma/projects/pic/microwave/hal/src/keypad4x3.c"
 const uint8 u8Keymap[4][3] = {
  { 's', '0', 'h'},
  { '7', '8', '9'},
@@ -137,24 +137,28 @@ const uint8 u8Keymap[4][3] = {
 };
 
 void
-KEYPAD4X3_vidInit(uint16Ref u16RowsDirectionRef,
- uint16Ref u16ColumnsDirectionRef,
- uint16Ref u16RowsDataRef,
- uint16Ref u16ColumnsDataRef,
+KEYPAD4X3_vidInit(uint8Ref u8RowsDirectionRef,
+ uint8Ref u8ColumnsDirectionRef,
+ uint8Ref u8RowsDataRef,
+ uint8Ref u8ColumnsDataRef,
  uint8 u8RowsMask,
  uint8 u8ColumnsMask)
 {
  ADCON1 |= 0X0F;
 
- u16DirectionRowsRef = u16RowsDirectionRef;
- u16DirectionColumnsRef = u16ColumnsDirectionRef;
- u16DataRowsRef = u16RowsDataRef;
- u16DataColumnsRef = u16ColumnsDataRef;
+ u8DirectionRowsRef = u8RowsDirectionRef;
+ u8DirectionColumnsRef = u8ColumnsDirectionRef;
+ u8DataRowsRef = u8RowsDataRef;
+ u8DataColumnsRef = u8ColumnsDataRef;
 
  u8MaskRows = u8RowsMask;
  u8MaskColumns = u8ColumnsMask;
 
-  { (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DataColumnsRef)) ) )=(( ( (*(u16DataColumnsRef)) ) )|( (u8MaskColumns) ))) ; (( ( (*(u16DataRowsRef)) ) )=(( ( (*(u16DataRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DirectionColumnsRef)) ) )=(( ( (*(u16DirectionColumnsRef)) ) )&(~ (u8MaskColumns) ))) ; } ;
+  (( ( (*(u8DirectionRowsRef)) ) )=(( ( (*(u8DirectionRowsRef)) ) )|( (u8MaskRows) ))) ;
+  (( ( (*(u8DataColumnsRef)) ) )=(( ( (*(u8DataColumnsRef)) ) )|( (u8MaskColumns) ))) ;
+  (( ( (*(u8DataRowsRef)) ) )=(( ( (*(u8DataRowsRef)) ) )|( (u8MaskRows) ))) ;
+  (( ( (*(u8DirectionRowsRef)) ) )=(( ( (*(u8DirectionRowsRef)) ) )|( (u8MaskRows) ))) ;
+  (( ( (*(u8DirectionColumnsRef)) ) )=(( ( (*(u8DirectionColumnsRef)) ) )&(~ (u8MaskColumns) ))) ;
 }
 
 uint8
@@ -165,15 +169,15 @@ KEYPAD4X3_u8GetKeyPressed(void)
  uint8 u8Column = 0;
  uint8 u8RowRead = 0;
 
-  { (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DataColumnsRef)) ) )=(( ( (*(u16DataColumnsRef)) ) )|( (u8MaskColumns) ))) ; (( ( (*(u16DataRowsRef)) ) )=(( ( (*(u16DataRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )|( (u8MaskRows) ))) ; (( ( (*(u16DirectionColumnsRef)) ) )=(( ( (*(u16DirectionColumnsRef)) ) )&(~ (u8MaskColumns) ))) ; } ;
+  { (( ( (*(u8DataColumnsRef)) ) )=(( ( (*(u8DataColumnsRef)) ) )|( (u8MaskColumns) ))) ; (( ( (*(u8DirectionColumnsRef)) ) )=(( ( (*(u8DirectionColumnsRef)) ) )&(~ (u8MaskColumns) ))) ; } ;
 
-  (( ( (*(u16DataColumnsRef)) ) )=(( ( (*(u16DataColumnsRef)) ) )|( (u8MaskColumns) ))) ;
+  (( ( (*(u8DataColumnsRef)) ) )=(( ( (*(u8DataColumnsRef)) ) )|( (u8MaskColumns) ))) ;
 
  for (u8Column = 0; u8Column < 3; u8Column += 1)
  {
-  ( ( (*(u16DataColumnsRef)) ) &=(~(1<<u8Column))) ;
+  ( ( (*(u8DataColumnsRef)) ) &=(~(1<<u8Column))) ;
 
- u8RowRead =  (( ( (*(u16DataRowsRef)) ) )&( (u8MaskRows) )) ;
+ u8RowRead =  (( ( (*(u8DataRowsRef)) ) )&( (u8MaskRows) )) ;
 
  if (u8RowRead !=  (u8MaskRows) )
  {
@@ -181,11 +185,11 @@ KEYPAD4X3_u8GetKeyPressed(void)
  }
  else
  {
-  ( ( (*(u16DataColumnsRef)) ) |=(1<<u8Column)) ;
+  ( ( (*(u8DataColumnsRef)) ) |=(1<<u8Column)) ;
  }
  }
 
-  { (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )&(~ (u8MaskRows) ))) ; (( ( (*(u16DataColumnsRef)) ) )=(( ( (*(u16DataColumnsRef)) ) )&(~ (u8MaskColumns) ))) ; (( ( (*(u16DataRowsRef)) ) )=(( ( (*(u16DataRowsRef)) ) )&(~ (u8MaskRows) ))) ; (( ( (*(u16DirectionRowsRef)) ) )=(( ( (*(u16DirectionRowsRef)) ) )&(~ (u8MaskRows) ))) ; (( ( (*(u16DirectionColumnsRef)) ) )=(( ( (*(u16DirectionColumnsRef)) ) )|( (u8MaskColumns) ))) ; } ;
+  { (( ( (*(u8DataColumnsRef)) ) )=(( ( (*(u8DataColumnsRef)) ) )&(~ (u8MaskColumns) ))) ; (( ( (*(u8DirectionColumnsRef)) ) )=(( ( (*(u8DirectionColumnsRef)) ) )|( (u8MaskColumns) ))) ; } ;
 
  if (u8Column != 3)
  {

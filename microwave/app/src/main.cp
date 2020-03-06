@@ -6,9 +6,9 @@
 
 
 typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+typedef unsigned int uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef enum {
  IntEn_TMR1_CCP2,
@@ -162,14 +162,14 @@ uint8 KEYPAD4X3_u8GetKeyPressed(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/util/inc/macros.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/segment7.h"
 #line 31 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
-#line 25 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
-uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+#line 55 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
+uint8 UWAVE_UTIL_u8DecrementTime(uint16Ref);
 void UWAVE_UTIL_vidScheduler(void);
 #line 93 "e:/embedded_diploma/projects/pic/microwave/mcal/inc/interrupt.h"
 extern uint8 u8OverflowFlag;
-extern uint64 u64InitialCount;
+extern uint32 u64InitialCount;
 
 void INTERRUPT_vidInit(void);
 void INTERRUPT_vidSetPriority(enInterruptPriority,enPriority);
@@ -181,8 +181,8 @@ void UWAVE_SENSORS_vidInit(void);
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_motor.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_keypad.h"
 #line 1 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-#line 25 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
-uint8 UWAVE_UTIL_u8DecrementTime(uint32Ref);
+#line 55 "e:/embedded_diploma/projects/pic/microwave/util/inc/uwave_util.h"
+uint8 UWAVE_UTIL_u8DecrementTime(uint16Ref);
 void UWAVE_UTIL_vidScheduler(void);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/app/src/main.c"
 void

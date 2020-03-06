@@ -5,9 +5,9 @@
 
 
 typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long uint64;
+typedef unsigned int uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef enum {
  IntEn_TMR1_CCP2,
@@ -116,7 +116,7 @@ void SEGMENT7_vidInit(uint16Ref, uint16Ref, uint16Ref, uint16Ref, uint8);
 void SEGMENT7_vidDisplayDigit(uint8, uint8);
 void SEGMENT7_vidDisplayFigure(uint8, uint8);
 #line 31 "e:/embedded_diploma/projects/pic/microwave/hal/inc/uwave_display.h"
-void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32);
+void UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16);
 void UWAVE_DISPLAY_vidDisplayEnd(void);
 #line 3 "E:/embedded_diploma/projects/pic/microwave/hal/src/uwave_display.c"
 static uint8 u8SecondsUnits = 0;
@@ -129,19 +129,19 @@ static uint8 u8CurrentCursor = 0;
 
 
 static void
-vidGetTimeDigits(uint32 u32Time)
+UWAVE_DISPLAY_vidGetTimeDigits(uint16 u16Time)
 {
- u8MinutesTens = u32Time / 1000;
- u8MinutesUnits = (u32Time % 1000) / 100;
- u8SecondsTens = (u32Time % 100) / 10;
- u8SecondsUnits = (u32Time % 100) % 10;
+ u8MinutesTens = u16Time / 1000;
+ u8MinutesUnits = (u16Time % 1000) / 100;
+ u8SecondsTens = (u16Time % 100) / 10;
+ u8SecondsUnits = (u16Time % 100) % 10;
 }
 
 void
-UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
+UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16 u16Time)
 {
 
- vidGetTimeDigits(u32Time);
+ UWAVE_DISPLAY_vidGetTimeDigits(u16Time);
 
  switch (u8CurrentCursor)
  {
@@ -159,7 +159,7 @@ UWAVE_DISPLAY_vidUpdateTimeDisplay(uint32 u32Time)
  break;
  }
 
- u8CurrentCursor = (u8CurrentCursor <  (((u32Time)/1000)?3:((u32Time)/100)?2:((u32Time)/10)?1:0) )? (u8CurrentCursor + 1) : 0;
+ u8CurrentCursor = (u8CurrentCursor <  (((u16Time)/1000)?3:((u16Time)/100)?2:((u16Time)/10)?1:0) )? (u8CurrentCursor + 1) : 0;
 }
 
 void

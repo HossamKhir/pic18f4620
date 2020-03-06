@@ -1,6 +1,6 @@
 #include "timers.h"
 
-uint64 u64InitialCount = 0;
+uint32 u64InitialCount = 0;
 
 // mapping timers to a map of prescalers, prescaler mapping register value to divisor
 const uint16 u16Prescaler[4][9][2] = {
@@ -39,8 +39,7 @@ TIMERS_vidInitTimer(enTimer timerID,
     enPrescale prescale,
     enPostscale postscale,
     uint64 u64TargetTime,
-    uint64 u64TimeUnit
-)
+    uint64 u64TimeUnit)
 {
     u64TargetTime = GET_TIME_IN_USEC(u64TargetTime,u64TimeUnit);
     TIMERS_vidUpdateInitialCount(u64TargetTime, timerID, prescale, postscale);
@@ -52,18 +51,17 @@ void
 TIMERS_vidUpdateInitialCount(uint64 u64TargetTime,
     enTimer timerID,
     enPrescale prescale,
-    enPostscale postscale
-)
+    enPostscale postscale)
 {
     switch (timerID)
     {
         case TIMER0:
         case TIMER1:
         case TIMER3:
-            u64InitialCount = (FULL_COUNT + 1) - (uint64)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1]));
+            u64InitialCount = (FULL_COUNT + 1) - (uint32)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1]));
         break;
         case TIMER2:
-            u64InitialCount = (uint64)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
+            u64InitialCount = (uint32)(u64TargetTime / (CYCLE_PERIOD * (double)u16Prescaler[timerID][prescale][1] * (postscale + 1)));
         break;
     }
 }
@@ -101,22 +99,22 @@ TIMERS_vidConfigTimerInterrupts(enTimer timerID, enPriority priority)
     switch(timerID)
     {
         case TIMER0:
-            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR0,IntFlag_TMR0_CCP1_HLVD);
+            CLR_TMR_INT_FLAG(TIMER0);
             INTERRUPT_vidSetPriority(IntPr_TMR0_CCP1_HLVD, priority);
             INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR0,IntEn_TMR0_RX);
         break;
         case TIMER1:
-            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR1_TMR2,IntFlag_RB_INT1_TMR1_CCP2);
+            CLR_TMR_INT_FLAG(TIMER1);
             INTERRUPT_vidSetPriority(IntPr_RB_TMR1_CCP2, priority);
             INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR1_TMR2,IntEn_TMR1_CCP2);
         break;
         case TIMER2:
-            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR1_TMR2,IntFlag_INT0_INT2_TMR2_TMR3);
+            CLR_TMR_INT_FLAG(TIMER2);
             INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
             INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR1_TMR2,IntEn_TMR2_TMR3);
         break;
         case TIMER3:
-            INTERRUPT_CLR_FLAG(INTERRUPT_REG_FLAG_TMR3,IntFlag_INT0_INT2_TMR2_TMR3);
+            CLR_TMR_INT_FLAG(TIMER3);
             INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
             INTERRUPT_ENABLE_SRC(INTERRUPT_REG_EN_TMR3,IntEn_TMR2_TMR3);
         break;
