@@ -108,7 +108,7 @@ main
 		UWAVE_DISPLAY_vidDisplayEnd
 			SEGMENT7_vidDisplayFigure
 		UWAVE_DISPLAY_vidUpdateTimeDisplay
-			vidGetTimeDigits
+			UWAVE_DISPLAY_vidGetTimeDigits
 				Div_16x16_U
 			SEGMENT7_vidDisplayDigit
 			Div_16x16_U

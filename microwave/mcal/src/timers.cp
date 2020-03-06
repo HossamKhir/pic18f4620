@@ -212,8 +212,7 @@ TIMERS_vidInitTimer(enTimer timerID,
  enPrescale prescale,
  enPostscale postscale,
  uint64 u64TargetTime,
- uint64 u64TimeUnit
-)
+ uint64 u64TimeUnit)
 {
  u64TargetTime =  ((u64TargetTime)*(u64TimeUnit)) ;
  TIMERS_vidUpdateInitialCount(u64TargetTime, timerID, prescale, postscale);
@@ -225,8 +224,7 @@ void
 TIMERS_vidUpdateInitialCount(uint64 u64TargetTime,
  enTimer timerID,
  enPrescale prescale,
- enPostscale postscale
-)
+ enPostscale postscale)
 {
  switch (timerID)
  {
@@ -274,22 +272,22 @@ TIMERS_vidConfigTimerInterrupts(enTimer timerID, enPriority priority)
  switch(timerID)
  {
  case TIMER0:
-  ((INTCON)&=(~(1<<IntFlag_TMR0_CCP1_HLVD))) ;
+  (INTCON. TMR0IF =0) ;
  INTERRUPT_vidSetPriority(IntPr_TMR0_CCP1_HLVD, priority);
   ((INTCON)|=(1<<IntEn_TMR0_RX)) ;
  break;
  case TIMER1:
-  ((PIR1)&=(~(1<<IntFlag_RB_INT1_TMR1_CCP2))) ;
+  (INTCON. TMR1IF =0) ;
  INTERRUPT_vidSetPriority(IntPr_RB_TMR1_CCP2, priority);
   ((PIE1)|=(1<<IntEn_TMR1_CCP2)) ;
  break;
  case TIMER2:
-  ((PIR1)&=(~(1<<IntFlag_INT0_INT2_TMR2_TMR3))) ;
+  (INTCON. TMR2IF =0) ;
  INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
   ((PIE1)|=(1<<IntEn_TMR2_TMR3)) ;
  break;
  case TIMER3:
-  ((PIR2)&=(~(1<<IntFlag_INT0_INT2_TMR2_TMR3))) ;
+  (INTCON. TMR3IF =0) ;
  INTERRUPT_vidSetPriority(IntPr_TMR2_TMR3, priority);
   ((PIE2)|=(1<<IntEn_TMR2_TMR3)) ;
  break;

@@ -1,15 +1,15 @@
 
-uwave_display_vidGetTimeDigits:
+uwave_display_UWAVE_DISPLAY_vidGetTimeDigits:
 
-;uwave_display.c,13 :: 		vidGetTimeDigits(uint16 u16Time)
+;uwave_display.c,13 :: 		UWAVE_DISPLAY_vidGetTimeDigits(uint16 u16Time)
 ;uwave_display.c,15 :: 		u8MinutesTens   = u16Time / 1000;
 	MOVLW       232
 	MOVWF       R4 
 	MOVLW       3
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
@@ -19,9 +19,9 @@ uwave_display_vidGetTimeDigits:
 	MOVWF       R4 
 	MOVLW       3
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R8, 0 
@@ -40,9 +40,9 @@ uwave_display_vidGetTimeDigits:
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+0, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_uwave_display_vidGetTimeDigits_u16Time+1, 0 
+	MOVF        FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R8, 0 
@@ -50,16 +50,16 @@ uwave_display_vidGetTimeDigits:
 	MOVF        R9, 0 
 	MOVWF       R1 
 	MOVF        R0, 0 
-	MOVWF       FLOC_uwave_display_vidGetTimeDigits+0 
+	MOVWF       FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+0 
 	MOVF        R1, 0 
-	MOVWF       FLOC_uwave_display_vidGetTimeDigits+1 
+	MOVWF       FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+1 
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FLOC_uwave_display_vidGetTimeDigits+0, 0 
+	MOVF        FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+0, 0 
 	MOVWF       R0 
-	MOVF        FLOC_uwave_display_vidGetTimeDigits+1, 0 
+	MOVF        FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R0, 0 
@@ -69,9 +69,9 @@ uwave_display_vidGetTimeDigits:
 	MOVWF       R4 
 	MOVLW       0
 	MOVWF       R5 
-	MOVF        FLOC_uwave_display_vidGetTimeDigits+0, 0 
+	MOVF        FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+0, 0 
 	MOVWF       R0 
-	MOVF        FLOC_uwave_display_vidGetTimeDigits+1, 0 
+	MOVF        FLOC_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+1, 0 
 	MOVWF       R1 
 	CALL        _Div_16x16_U+0, 0
 	MOVF        R8, 0 
@@ -81,19 +81,19 @@ uwave_display_vidGetTimeDigits:
 	MOVF        R0, 0 
 	MOVWF       uwave_display_u8SecondsUnits+0 
 ;uwave_display.c,19 :: 		}
-L_end_vidGetTimeDigits:
+L_end_UWAVE_DISPLAY_vidGetTimeDigits:
 	RETURN      0
-; end of uwave_display_vidGetTimeDigits
+; end of uwave_display_UWAVE_DISPLAY_vidGetTimeDigits
 
 _UWAVE_DISPLAY_vidUpdateTimeDisplay:
 
 ;uwave_display.c,22 :: 		UWAVE_DISPLAY_vidUpdateTimeDisplay(uint16 u16Time)
-;uwave_display.c,25 :: 		vidGetTimeDigits(u16Time);
+;uwave_display.c,25 :: 		UWAVE_DISPLAY_vidGetTimeDigits(u16Time);
 	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+0, 0 
-	MOVWF       FARG_uwave_display_vidGetTimeDigits_u16Time+0 
+	MOVWF       FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+0 
 	MOVF        FARG_UWAVE_DISPLAY_vidUpdateTimeDisplay_u16Time+1, 0 
-	MOVWF       FARG_uwave_display_vidGetTimeDigits_u16Time+1 
-	CALL        uwave_display_vidGetTimeDigits+0, 0
+	MOVWF       FARG_uwave_display_UWAVE_DISPLAY_vidGetTimeDigits_u16Time+1 
+	CALL        uwave_display_UWAVE_DISPLAY_vidGetTimeDigits+0, 0
 ;uwave_display.c,27 :: 		switch (u8CurrentCursor)
 	GOTO        L_UWAVE_DISPLAY_vidUpdateTimeDisplay0
 ;uwave_display.c,29 :: 		case 0:

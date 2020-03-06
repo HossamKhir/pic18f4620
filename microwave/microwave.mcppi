@@ -6,7 +6,7 @@ Value=-1
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=util\inc\uwave_util.h
+Value=app\src\main.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -32,10 +32,7 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=3
-File0=app\src\main.c
-File1=util\src\uwave_util.c
-File2=util\inc\uwave_util.h
+Count=0
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
